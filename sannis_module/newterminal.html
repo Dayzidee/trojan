@@ -2345,17 +2345,17 @@
   /* Fixed Mobile Stacking */
   /* Fixed Mobile Stacking */
   @media (max-width: 1024px) {
-    #terminal-view {
+    #main-layout {
       flex-direction: column !important;
       display: flex !important;
       height: auto !important;
       overflow-y: auto !important;
     }
 
-    /* Target direct children of terminal-view by ID */
+    /* Target direct children of main-layout by ID */
 
     /* 1. Trading Panel (Center) -> TOP */
-    #terminal-view>#trading-column {
+    #main-layout>#trading-column {
       order: 1 !important;
       width: 100% !important;
       flex: none !important;
@@ -2363,14 +2363,14 @@
     }
 
     /* 2. Swap/Right Column -> MIDDLE */
-    #terminal-view>#swap-column {
+    #main-layout>#swap-column {
       order: 2 !important;
       width: 100% !important;
       flex: none !important;
     }
 
     /* 3. Analytics (Left) -> BOTTOM */
-    #terminal-view>#analytics-column {
+    #main-layout>#analytics-column {
       order: 3 !important;
       width: 100% !important;
       flex: none !important;
@@ -3410,8 +3410,8 @@
     </nav>
 
     <!-- Workspace Container (Modified to span all columns) -->
-    <div id="terminal-view"
-      class="tab-content active flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden gap-3 p-3 h-auto lg:h-full w-full">
+    <div id="main-layout"
+      class="flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden gap-3 p-3 h-auto lg:h-full w-full">
 
       <!-- Left Column: Analytics + Transaction History (flex-1) -->
       <div id="analytics-column"
@@ -3424,15 +3424,12 @@
               <div class="flex w-full flex-1 flex-col">
                 <div class="flex items-center justify-between px-2 pb-5 pt-3">
                   <div role="tablist" class="rounded-8 z-0 flex w-full items-center relative h-8"><button role="tab"
-                      aria-selected="false"
-                      class="group relative z-10 h-full whitespace-nowrap transition-all aria-selected:text-text-primary aria-[selected=false]:text-text-tertiary aria-[selected=false]:hover:text-text-secondary px-4 label-xs">Spot</button><button
+                      id="tab-terminal" aria-selected="true"
+                      class="group relative z-10 h-full whitespace-nowrap transition-all aria-selected:text-text-primary aria-[selected=false]:text-text-tertiary aria-[selected=false]:hover:text-text-secondary px-4 label-xs text-text-primary bg-bg-surface2 rounded-6">Spot</button><button
                       role="tab" aria-selected="false"
-                      class="group relative z-10 h-full whitespace-nowrap transition-all aria-selected:text-text-primary aria-[selected=false]:text-text-tertiary aria-[selected=false]:hover:text-text-secondary px-4 label-xs">Performance</button><button
-                      role="tab" aria-selected="true"
-                      class="group relative z-10 h-full whitespace-nowrap transition-all aria-selected:text-text-primary aria-[selected=false]:text-text-tertiary aria-[selected=false]:hover:text-text-secondary px-4 label-xs">Wallets</button>
-                    <div
-                      class="absolute transition-all duration-200 rounded-8 border-neutral-750 h-full bg-alpha-neutral-secondary border-0"
-                      style="width: 76.3333px; left: 171.983px;"></div>
+                      class="group relative z-10 h-full whitespace-nowrap transition-all aria-selected:text-text-primary aria-[selected=false]:text-text-tertiary aria-[selected=false]:hover:text-text-secondary px-4 label-xs text-text-tertiary">Performance</button><button
+                      role="tab" id="tab-wallet" aria-selected="false"
+                      class="group relative z-10 h-full whitespace-nowrap transition-all aria-selected:text-text-primary aria-[selected=false]:text-text-tertiary aria-[selected=false]:hover:text-text-secondary px-4 label-xs text-text-tertiary">Wallets</button>
                   </div>
                   <div class="flex items-center gap-3"><button
                       class="inline-flex outline-none w-full items-center focus-visible:ring-0 group focus-visible:outline-none whitespace-nowrap justify-center label-2xs disabled:pointer-events-none disabled:opacity-40 relative h-8 rounded-8 text-text-secondary bg-neutral-900 hover:bg-neutral-850 border border-stroke-subtle transition-opacity duration-200 px-2.5"
@@ -4395,43 +4392,11 @@
               </div>
               <!-- Right Column: Swap + Wallet (equal, scrollable) -->
               <!-- Right Column removed -->
-              <div id="wallet-view" class="tab-content hidden h-full w-full bg-black text-white">
-                <iframe src="Holdings _ Trojan.html" class="w-full h-full border-none" title="Wallet"></iframe>
+              <div id="wallet-view" class="hidden h-full w-full bg-black text-white flex-1 rounded-8 overflow-hidden">
+                <iframe src="holdings.html" class="w-full h-full border-none" title="Wallet"></iframe>
               </div>
             </div>
 
-            <!-- Javascript for Tab Switching -->
-            <script>
-              function switchTab(tabId) {
-                // Update Tab Buttons
-                const tabs = ['terminal', 'swap', 'wallet'];
-                tabs.forEach(t => {
-                  const btn = document.getElementById('tab-' + t);
-                  if (t === tabId) {
-                    btn.classList.add('text-text-primary', 'bg-bg-surface2', 'rounded-6');
-                    btn.classList.remove('text-text-tertiary');
-                    btn.setAttribute('aria-selected', 'true');
-                  } else {
-                    btn.classList.remove('text-text-primary', 'bg-bg-surface2', 'rounded-6');
-                    btn.classList.add('text-text-tertiary');
-                    btn.setAttribute('aria-selected', 'false');
-                  }
-                });
-
-                // Update Views
-                const views = ['terminal-view', 'swap-view', 'wallet-view'];
-                views.forEach(v => {
-                  const view = document.getElementById(v);
-                  if (v === tabId + '-view') {
-                    view.classList.add('active');
-                    view.classList.remove('hidden');
-                  } else {
-                    view.classList.remove('active');
-                    view.classList.add('hidden');
-                  }
-                });
-              }
-            </script>
 
             <style>
               /* Mobile Layout Enforcement - Appended at end for specificity */
@@ -4442,7 +4407,7 @@
                 }
 
                 /* Main container stack */
-                #terminal-view:not(.hidden) {
+                #main-layout:not(.hidden) {
                   display: flex !important;
                   flex-direction: column !important;
                   flex-wrap: nowrap !important;

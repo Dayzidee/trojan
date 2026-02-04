@@ -82,7 +82,18 @@ const Terminal = () => {
     }, [currentCoinIndex, prices]);
 
     // Wallet Balance State
-    const [solBalance, setSolBalance] = React.useState(1.24);
+    const [tokenBalances, setTokenBalances] = React.useState({
+        SOL: 1.24,
+        BTC: 0.00,
+        ETH: 0.00
+    });
+
+    // Swap Page State
+    const [swapInput, setSwapInput] = React.useState('');
+    const [swapOutputToken, setSwapOutputToken] = React.useState('BTC');
+    const [isSwapDropdownOpen, setIsSwapDropdownOpen] = React.useState(false);
+
+    const solBalance = tokenBalances.SOL;
 
     const closeModal = () => setActiveModal(null);
 
@@ -93,6 +104,31 @@ const Terminal = () => {
     const toggleTradeAction = (action: 'buy' | 'sell') => {
         setCurrentAction(action);
     };
+
+    const handleSwap = () => {
+        const inputAmt = parseFloat(swapInput);
+        if (isNaN(inputAmt) || inputAmt <= 0 || inputAmt > tokenBalances.SOL) return;
+
+        const outputAmt = parseFloat(calculatedSwapOutput);
+
+        setTokenBalances(prev => ({
+            ...prev,
+            SOL: prev.SOL - inputAmt,
+            [swapOutputToken]: prev[swapOutputToken] + outputAmt
+        }));
+        setSwapInput('');
+        alert(`Successfully swapped ${inputAmt} SOL for ${outputAmt} ${swapOutputToken}`);
+    };
+
+    const calculatedSwapOutput = React.useMemo(() => {
+        const inputNum = parseFloat(swapInput);
+        if (isNaN(inputNum) || inputNum <= 0) return '0';
+
+        // Simple conversion simulation
+        const solPrice = prices.SOL;
+        const targetPrice = prices[swapOutputToken];
+        return ((inputNum * solPrice) / targetPrice).toFixed(6);
+    }, [swapInput, swapOutputToken, prices]);
 
     const copyDepositAddress = () => {
         const copyText = document.getElementById("deposit-address-input") as HTMLInputElement;
@@ -198,7 +234,7 @@ const Terminal = () => {
                                                     <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
                                                     <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
                                                 </svg>
-                                                <span className="label-xs text-text-secondary">View All Wallets</span>
+                                                <span className="label-xs text-text-secondary">Connect Wallets</span>
                                             </a>
                                         </div>
                                     </div>

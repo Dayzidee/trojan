@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 // Using a mix of icons or text if SVGs are unavailable directly.
 // In a real scenario, we'd fetch these SVGs. For now, text is cleaner than broken SVGs.
@@ -24,18 +25,36 @@ const PARTNERS = [
 
 const PartnerLogos = () => {
     return (
-        <div className="w-full overflow-hidden">
-            {/* Gradient fade masks */}
-            <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 md:gap-x-16">
-                {PARTNERS.map((partner) => (
-                    <div
-                        key={partner.name}
-                        className={`text-xl md:text-2xl font-bold text-gray-600 transition-colors duration-300 ${partner.color} cursor-default select-none`}
-                    >
-                        {partner.name}
-                    </div>
-                ))}
-            </div>
+        <div className="w-full overflow-hidden" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
+            <motion.div
+                className="flex gap-16 whitespace-nowrap"
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
+                style={{ width: 'max-content' }}
+            >
+                {/* First set of logos */}
+                <div className="flex gap-16 items-center">
+                    {PARTNERS.map((partner) => (
+                        <div
+                            key={`${partner.name}-1`}
+                            className={`text-xl md:text-2xl font-bold text-gray-600 transition-colors duration-300 ${partner.color} cursor-default select-none`}
+                        >
+                            {partner.name}
+                        </div>
+                    ))}
+                </div>
+                {/* Second set of logos for seamless loop */}
+                <div className="flex gap-16 items-center">
+                    {PARTNERS.map((partner) => (
+                        <div
+                            key={`${partner.name}-2`}
+                            className={`text-xl md:text-2xl font-bold text-gray-600 transition-colors duration-300 ${partner.color} cursor-default select-none`}
+                        >
+                            {partner.name}
+                        </div>
+                    ))}
+                </div>
+            </motion.div>
         </div>
     );
 };

@@ -1,0 +1,21 @@
+d>
+
+                {/* Secondary Features - Grid */}
+                <SectionHeader
+                    title="Advanced Tools"
+                    subtitle="Power user features for the demanding trader."
+                    align="left"
+                    className="mb-10 pl-2 border-l-4 border-green-500"
+                />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {[
+                        { title: 'Copy Trading', desc: "Copy a wallet’s buys and sells with precision.", icon: Copy, color: 'text-blue-400', bg: 'bg-blue-400/10 border-blue-400/20' },
+                        { title: 'Token Audits', desc: "Instant insights to contract functions and safety.", icon: ShieldCheck, color: 'text-green-400', bg: 'bg-green-400/10 border-green-400/20' },
+                        { title: 'Real-Time Alerts', desc: "The most important notifications you need in-app.", icon: Bell, color: 'text-yellow-400', bg: 'bg-yellow-400/10 border-yellow-400/20' },
+                        { title: 'Most Complete Data', desc: "Access years of onchain history. Every buy, sell, mint.", icon: Database, color: 'text-purple-400', bg: 'bg-purple-400/10 border-purple-400/20' },
+                        { title: '24/7 Support', desc: "Live support whenever you need it.", icon: HeadphonesIcon, color: 'text-pink-400', bg: 'bg-pink-400/10 border-pink-400/20' },
+                        { title: 'Watchlists', desc: "Quickly create, label, and organize lists.", icon: List, color: 'text-orange-400', bg: 'bg-orange-400/10 border-orange-400/20' },
+                        { title: 'Perpetuals', desc: "Trade perpetuals directly onchain with speed.", icon: Activity, color: 'text-red-400', bg: 'bg-red-400/10 border-red-400/20' },
+                        { title: 'Custom PNL Cards', desc: "Flex your holdings with curated PNL cards.", icon: CreditCard, color: 'text-cyan-400', bg: 'bg-cyan-400/10 border-cyan-400/20' },
+                    ].map((featur

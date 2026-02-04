@@ -34,10 +34,10 @@ const FAQItem = ({ question, answer, isOpen, onClick }: { question: string, answ
     return (
         <div className={`mb-6 rounded-2xl transition-all duration-500 ${isOpen ? 'bg-white/5 border-white/20 shadow-2xl' : 'bg-[#0A0A0A] border-white/5 hover:border-white/10 hover:bg-white/5'} border`}>
             <button
-                className="w-full flex items-center justify-between p-8 text-left focus:outline-none"
+                className="w-full flex items-center justify-between p-6 md:p-8 text-left focus:outline-none"
                 onClick={onClick}
             >
-                <span className={`text-xl md:text-2xl font-bold transition-colors duration-300 ${isOpen ? 'text-white' : 'text-gray-400'}`}>
+                <span className={`text-lg md:text-2xl font-semibold transition-colors duration-300 ${isOpen ? 'text-white' : 'text-gray-400'}`}>
                     {question}
                 </span>
                 <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-500 ${isOpen ? 'bg-white border-white' : 'border-white/10'}`}>
@@ -49,7 +49,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }: { question: string, answ
             <div
                 className={`transition-all duration-500 ease-in-out overflow-hidden ${isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
             >
-                <div className="px-8 pb-8 text-gray-400 leading-relaxed text-lg md:text-xl border-t border-white/5 pt-6">
+                <div className="px-6 pb-6 md:px-8 md:pb-8 text-gray-400 leading-relaxed text-base md:text-xl border-t border-white/5 pt-6">
                     {answer}
                 </div>
             </div>
@@ -61,7 +61,7 @@ const FAQ = () => {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
     return (
-        <Section className="py-32 bg-black relative">
+        <Section className="py-20 md:py-32 bg-black relative">
             {/* Background Ambience */}
             <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-green-500/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -78,8 +78,8 @@ const FAQ = () => {
                             <p className="text-gray-400 mb-12 text-xl font-medium leading-relaxed max-w-md">
                                 Get clear answers to commonly asked questions about the <span className="text-white">Trojan Terminal</span> ecosystem.
                             </p>
-                            <div className="p-8 rounded-3xl bg-gradient-to-br from-[#0A0A0A] to-[#121212] border border-white/10 shadow-2xl">
-                                <h4 className="text-2xl font-black text-white mb-4">Still need help?</h4>
+                            <div className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-[#0A0A0A] to-[#121212] border border-white/10 shadow-2xl">
+                                <h4 className="text-xl md:text-2xl font-black text-white mb-4">Still need help?</h4>
                                 <p className="text-gray-500 mb-8 leading-relaxed">Our pro support team is available around the clock to assist you.</p>
                                 <a href="#" className="inline-flex items-center justify-center w-full font-black text-black bg-white hover:bg-gray-100 px-6 py-4 rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.1)]">
                                     Join Community Discord

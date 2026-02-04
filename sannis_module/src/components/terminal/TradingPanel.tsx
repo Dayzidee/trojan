@@ -1,11 +1,23 @@
 import React from 'react';
 
+interface Coin {
+    name: string;
+    symbol: string;
+    price: string;
+    mcap: string;
+    vol: string;
+    liquidity: string;
+    icon: string;
+    isSvg: boolean;
+}
+
 interface TradingPanelProps {
     currentAction: 'buy' | 'sell';
     onToggleAction: (action: 'buy' | 'sell') => void;
+    coin: Coin;
 }
 
-const TradingPanel: React.FC<TradingPanelProps> = ({ currentAction, onToggleAction }) => {
+const TradingPanel: React.FC<TradingPanelProps> = ({ currentAction, onToggleAction, coin }) => {
     const [orderType, setOrderType] = React.useState<'market' | 'limit' | 'dca'>('market');
     const [priority, setPriority] = React.useState<'fast' | 'turbo' | 'eco'>('turbo');
     const [autoSell, setAutoSell] = React.useState(false);
@@ -72,8 +84,12 @@ const TradingPanel: React.FC<TradingPanelProps> = ({ currentAction, onToggleActi
             <div className="flex w-full flex-col gap-2">
                 <div className="flex h-10 items-center justify-between gap-2 px-3 rounded-8 bg-bg-surface2 border border-stroke-subtle hover:bg-bg-surface3 transition-colors cursor-text group">
                     <div className="flex items-center gap-1.5">
-                        <img src="https://cdn.trojan.com/coins/sol.svg" alt="SOL" className="w-4.5 h-4.5 rounded-full" />
-                        <span className="label-sm text-text-secondary font-medium">SOL</span>
+                        {coin.isSvg ? (
+                            <div className="w-4.5 h-4.5 rounded-full overflow-hidden" dangerouslySetInnerHTML={{ __html: coin.icon }} />
+                        ) : (
+                            <img src={coin.icon} alt={coin.symbol} className="w-4.5 h-4.5 rounded-full object-cover" />
+                        )}
+                        <span className="label-sm text-text-secondary font-medium">{coin.symbol}</span>
                     </div>
                     <input className="flex-1 bg-transparent text-right outline-none text-text-primary label-sm placeholder:text-text-disabled w-full" placeholder="0" />
                 </div>
@@ -90,7 +106,7 @@ const TradingPanel: React.FC<TradingPanelProps> = ({ currentAction, onToggleActi
 
             {/* Execute Button */}
             <button className={`w-full py-3 rounded-8 label-sm font-bold transition-all shadow-lg ${currentAction === 'buy' ? 'bg-accent-green text-black hover:bg-opacity-90 shadow-green-900/20' : 'bg-accent-red text-white hover:bg-opacity-90 shadow-red-900/20'}`}>
-                {currentAction === 'buy' ? 'Buy SOL' : 'Sell SOL'}
+                {currentAction === 'buy' ? `Buy ${coin.symbol}` : `Sell ${coin.symbol}`}
             </button>
 
             {/* Auto Sell & Priority */}

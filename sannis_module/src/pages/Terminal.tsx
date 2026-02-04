@@ -129,7 +129,6 @@ const Terminal = () => {
                     <div className="hidden md:flex items-center gap-4">
                         <Link to="/" className="text-text-secondary hover:text-text-primary transition-colors text-sm font-medium">Home</Link>
                         <Link to="/terminal" className="text-text-primary text-sm font-medium">Terminal</Link>
-                        <Link to="/blog" className="text-text-secondary hover:text-text-primary transition-colors text-sm font-medium">Blog</Link>
                     </div>
                 </div>
 
@@ -334,7 +333,7 @@ const Terminal = () => {
                                 />
 
                                 <div className="mt-4">
-                                    <TradingPanel currentAction={currentAction} onToggleAction={toggleTradeAction} />
+                                    <TradingPanel currentAction={currentAction} onToggleAction={toggleTradeAction} coin={currentCoinData} />
                                 </div>
 
                                 {/* Stats Bar */}
@@ -353,44 +352,126 @@ const Terminal = () => {
 
                 {/* SWAP TAB */}
                 {activeTab === 'swap' && (
-                    <div className="flex items-center justify-center h-full p-4 overflow-y-auto">
-                        <div className="max-w-[480px] w-full bg-bg-surface1 border border-stroke-subtle rounded-16 p-6 shadow-2xl my-8">
-                            <div className="flex flex-col gap-4">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <svg width="20" height="20" stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" className="text-text-primary"><path d="M7 10h14l-4-4m0 8h-14l4 4" /></svg>
-                                    <span className="text-lg font-bold text-text-primary">Swap</span>
+                    <div className="flex items-center justify-center min-h-full p-4 overflow-y-auto bg-bg-surface1/30 backdrop-blur-sm">
+                        <div className="max-w-[440px] w-full bg-bg-surface1 border border-stroke-subtle rounded-24 p-6 shadow-[0_0_50px_rgba(0,0,0,0.5)] my-8 animate-in fade-in zoom-in-95 duration-300">
+                            <div className="flex flex-col gap-5">
+                                <div className="flex items-center justify-between mb-1">
+                                    <div className="flex items-center gap-2.5">
+                                        <div className="bg-bg-surface2 p-2 rounded-10 border border-stroke-subtle">
+                                            <svg width="20" height="20" stroke="currentColor" fill="none" strokeWidth="2.5" viewBox="0 0 24 24" className="text-accent-green"><path d="M7 10h14l-4-4m0 8h-14l4 4" /></svg>
+                                        </div>
+                                        <span className="text-xl font-bold text-text-primary tracking-tight">Swap</span>
+                                    </div>
+                                    <button className="text-text-tertiary hover:text-text-primary transition-colors p-1">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"></path></svg>
+                                    </button>
                                 </div>
 
-                                <div className="bg-bg-surface2 rounded-8 p-4 border border-neutral-800">
-                                    <div className="text-xs text-text-tertiary mb-2">You Swap</div>
-                                    <div className="flex items-center justify-between">
-                                        <input className="bg-transparent text-2xl outline-none w-full text-text-primary placeholder-text-disabled" placeholder="0" />
-                                        <div className="flex items-center gap-2 bg-neutral-800 px-3 py-1.5 rounded-8 border border-stroke-subtle">
-                                            <img src="https://cdn.trojan.com/coins/sol.svg" className="w-5 h-5 rounded-full" alt="SOL" />
-                                            <span className="text-text-primary font-medium">SOL</span>
+                                {/* Input Box */}
+                                <div className="bg-bg-surface2 rounded-20 p-5 border border-stroke-subtle hover:border-text-tertiary transition-colors group">
+                                    <div className="flex justify-between items-center mb-3">
+                                        <span className="text-xs font-semibold text-text-tertiary uppercase tracking-wider">You Pay</span>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-xs text-text-tertiary">Balance: {tokenBalances.SOL.toFixed(4)}</span>
+                                            <button
+                                                onClick={() => setSwapInput(tokenBalances.SOL.toString())}
+                                                className="text-[10px] font-bold text-accent-green bg-accent-green/10 px-2 py-0.5 rounded-4 hover:bg-accent-green hover:text-black transition-all"
+                                            >MAX</button>
                                         </div>
                                     </div>
-                                    <div className="text-right text-xs text-text-tertiary mt-1">Balance: {solBalance.toFixed(2)}</div>
-                                </div>
-
-                                <div className="flex justify-center -my-6 z-10 relative">
-                                    <div className="bg-bg-surface1 p-2 rounded-full border border-neutral-800 shadow-sm cursor-pointer hover:bg-bg-surface2 transition-colors">
-                                        <svg width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" className="text-text-secondary"><path d="M12 5v14M19 12l-7 7-7-7" /></svg>
-                                    </div>
-                                </div>
-
-                                <div className="bg-bg-surface2 rounded-8 p-4 border border-neutral-800 mt-2">
-                                    <div className="text-xs text-text-tertiary mb-2">You Receive</div>
-                                    <div className="flex items-center justify-between">
-                                        <input className="bg-transparent text-2xl outline-none w-full text-text-primary placeholder-text-disabled" placeholder="0" readOnly />
-                                        <div className="flex items-center gap-2 bg-neutral-800 px-3 py-1.5 rounded-8 border border-stroke-subtle cursor-pointer hover:bg-neutral-700 transition-colors">
-                                            <span className="text-text-primary font-medium">Select Token</span>
-                                            <svg width="12" height="12" stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" className="text-text-secondary"><path d="M6 9l6 6 6-6" /></svg>
+                                    <div className="flex items-center justify-between gap-4">
+                                        <input
+                                            value={swapInput}
+                                            onChange={(e) => setSwapInput(e.target.value)}
+                                            className="bg-transparent text-3xl font-medium outline-none w-full text-text-primary placeholder:text-text-disabled"
+                                            placeholder="0"
+                                            type="number"
+                                        />
+                                        <div className="flex items-center gap-2.5 bg-neutral-850 px-4 py-2 rounded-12 border border-stroke-subtle shadow-sm select-none">
+                                            <img src="https://cdn.trojan.com/coins/sol.svg" className="w-6 h-6 rounded-full" alt="SOL" />
+                                            <span className="text-text-primary font-bold">SOL</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <button className="w-full bg-accent-green text-black py-3.5 rounded-8 font-bold mt-2 hover:bg-opacity-90 transition-opacity">Swap</button>
+                                {/* Switch Button */}
+                                <div className="flex justify-center -my-8 z-10 relative">
+                                    <button className="bg-bg-surface1 p-3 rounded-full border border-stroke-subtle shadow-xl hover:bg-bg-surface2 hover:scale-110 transition-all duration-200 group ring-4 ring-bg-surface1">
+                                        <svg width="18" height="18" stroke="currentColor" fill="none" strokeWidth="2.5" viewBox="0 0 24 24" className="text-text-secondary group-hover:text-accent-green transition-colors"><path d="M12 5v14M19 12l-7 7-7-7" /></svg>
+                                    </button>
+                                </div>
+
+                                {/* Output Box */}
+                                <div className="bg-bg-surface2 rounded-20 p-5 border border-stroke-subtle hover:border-text-tertiary transition-colors relative">
+                                    <div className="flex justify-between items-center mb-3">
+                                        <span className="text-xs font-semibold text-text-tertiary uppercase tracking-wider">You Receive</span>
+                                        <span className="text-xs text-text-tertiary">Balance: {tokenBalances[swapOutputToken].toFixed(4)}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between gap-4">
+                                        <input
+                                            value={calculatedSwapOutput}
+                                            readOnly
+                                            className="bg-transparent text-3xl font-medium outline-none w-full text-text-primary placeholder:text-text-disabled"
+                                            placeholder="0"
+                                        />
+                                        <div
+                                            className="flex items-center gap-2.5 bg-neutral-850 px-4 py-2 rounded-12 border border-stroke-subtle shadow-sm cursor-pointer hover:bg-neutral-800 transition-all select-none group"
+                                            onClick={() => setIsSwapDropdownOpen(!isSwapDropdownOpen)}
+                                        >
+                                            {coinData[swapOutputToken].isSvg ? (
+                                                <div className="w-6 h-6 rounded-full overflow-hidden flex items-center justify-center transform scale-75" dangerouslySetInnerHTML={{ __html: coinData[swapOutputToken].icon }} />
+                                            ) : (
+                                                <img src={coinData[swapOutputToken].icon} className="w-6 h-6 rounded-full scale-110" alt={swapOutputToken} />
+                                            )}
+                                            <span className="text-text-primary font-bold">{swapOutputToken}</span>
+                                            <svg width="12" height="12" stroke="currentColor" fill="none" strokeWidth="3" viewBox="0 0 24 24" className={`text-text-tertiary group-hover:text-text-primary transition-transform ${isSwapDropdownOpen ? 'rotate-180' : ''}`}><path d="M6 9l6 6 6-6" /></svg>
+                                        </div>
+                                    </div>
+
+                                    {/* Inline Token Selector Dropdown */}
+                                    {isSwapDropdownOpen && (
+                                        <div className="absolute top-[100%] right-5 mt-2 w-48 bg-bg-surface1 border border-stroke-subtle rounded-16 shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                                            <div className="p-2 flex flex-col gap-1">
+                                                {['BTC', 'ETH'].map((sym) => (
+                                                    <div
+                                                        key={sym}
+                                                        onClick={() => {
+                                                            setSwapOutputToken(sym);
+                                                            setIsSwapDropdownOpen(false);
+                                                        }}
+                                                        className={`flex items-center gap-3 p-3 rounded-12 cursor-pointer transition-colors ${swapOutputToken === sym ? 'bg-bg-surface2' : 'hover:bg-bg-surface2'}`}
+                                                    >
+                                                        {coinData[sym].isSvg ? (
+                                                            <div className="w-6 h-6 rounded-full overflow-hidden flex items-center justify-center transform scale-75" dangerouslySetInnerHTML={{ __html: coinData[sym].icon }} />
+                                                        ) : (
+                                                            <img src={coinData[sym].icon} className="w-6 h-6 rounded-full" alt={sym} />
+                                                        )}
+                                                        <div className="flex flex-col">
+                                                            <span className="text-sm font-bold text-text-primary">{sym}</span>
+                                                            <span className="text-[10px] text-text-tertiary">{coinData[sym].name}</span>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Price Info */}
+                                <div className="px-1 flex justify-between items-center text-xs text-text-tertiary">
+                                    <span>Exchange Rate</span>
+                                    <span>1 SOL ≈ {(prices.SOL / prices[swapOutputToken]).toFixed(6)} {swapOutputToken}</span>
+                                </div>
+
+                                <button
+                                    onClick={handleSwap}
+                                    disabled={!swapInput || parseFloat(swapInput) > tokenBalances.SOL}
+                                    className={`w-full py-4 rounded-20 font-bold mt-2 shadow-lg transition-all duration-200 transform active:scale-95 ${(!swapInput || parseFloat(swapInput) > tokenBalances.SOL)
+                                        ? 'bg-bg-surface3 text-text-disabled cursor-not-allowed border border-stroke-subtle'
+                                        : 'bg-accent-green text-black hover:bg-opacity-90 hover:shadow-green-500/20'}`}
+                                >
+                                    {parseFloat(swapInput) > tokenBalances.SOL ? 'Insufficient Balance' : 'Swap Tokens'}
+                                </button>
                             </div>
                         </div>
                     </div>

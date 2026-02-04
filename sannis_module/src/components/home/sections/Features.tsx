@@ -102,7 +102,7 @@ const Features = () => {
                         { title: 'Perpetuals', desc: "Trade perpetuals directly onchain with speed.", icon: Activity, color: 'text-red-400', bg: 'bg-red-400/10 border-red-400/20' },
                         { title: 'Custom PNL Cards', desc: "Flex your holdings with curated PNL cards.", icon: CreditCard, color: 'text-cyan-400', bg: 'bg-cyan-400/10 border-cyan-400/20' },
                     ].map((feature, idx) => (
-                        <div key={idx} className="group p-6 rounded-2xl bg-[#0F0F0F] border border-white/5 hover:border-white/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                        <div key={idx} className="group p-6 rounded-2xl bg-neutral-900/40 border border-white/5 hover:border-white/10 transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl">
                             <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 ${feature.bg}`}>
                                 <feature.icon size={24} className={feature.color} />
                             </div>

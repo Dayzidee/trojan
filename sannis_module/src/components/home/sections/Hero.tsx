@@ -4,10 +4,10 @@ import HeroWallets from './HeroWallets';
 
 const Hero = () => {
     return (
-        <section className="relative w-full min-h-screen bg-black flex flex-col items-center overflow-hidden font-sans">
+        <section className="relative w-full min-h-screen bg-black flex flex-col items-center overflow-hidden font-sans bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]">
             
             {/* 1. Top Spacing: Pushing content down significantly (approx 200px+) */}
-            <div className="w-full pt-[150px] pb-32 flex flex-col items-center px-4">
+            <div className="w-full pt-[100px] pb-20 flex flex-col items-center px-4">
 
                 {/* 2. Logo Section */}
                 {/* Matches framer-15n7jim */}

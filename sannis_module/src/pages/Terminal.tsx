@@ -148,16 +148,16 @@ const Terminal = () => {
     return (
         <main id=":R1ja:" className="grid h-screen w-screen overflow-hidden bg-black"
             style={{ gridTemplateRows: '64px auto 1fr', gridTemplateColumns: '1fr' }}>
-            <nav className="bg-bg-base !pointer-events-auto flex w-full flex-shrink-0 items-center justify-between px-4 border-b border-stroke-subtle"
+            <nav className="bg-bg-base !pointer-events-auto flex w-full flex-shrink-0 items-center justify-between px-2 md:px-4 border-b border-stroke-subtle"
                 style={{ height: '64px' }}>
                 {/* Logo */}
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3 md:gap-6">
                     <a href="#" className="active" data-status="active" aria-current="page">
                         <div className="flex items-center gap-1.5">
-                            <div className="" style={{ width: '36px', height: '36px' }}>
-                                <img src="./canvas.png" alt="Trojan Icon" style={{ width: '36px', height: '36px', borderRadius: '50%' }} />
+                            <div className="w-8 h-8 md:w-9 md:h-9">
+                                <img src="./canvas.png" alt="Trojan Icon" className="w-full h-full rounded-full" />
                             </div>
-                            <img alt="Trojan" src="/logo-text-only.svg" className="mt-1 h-[20px] w-[81px]" />
+                            <img alt="Trojan" src="/logo-text-only.svg" className="mt-1 h-[18px] w-auto hidden sm:block" />
                         </div>
                     </a>
 
@@ -169,38 +169,38 @@ const Terminal = () => {
                 </div>
 
                 {/* Right Side: Search, Balance, Notifications */}
-                <div className="flex items-center justify-end gap-3">
-                    {/* Search Button */}
+                <div className="flex items-center justify-end gap-1.5 md:gap-3">
                     {/* Search Button */}
                     <button
                         onClick={() => setShowSearch(true)}
-                        className="rounded-8 bg-bg-surface1 border-stroke-subtle hover:bg-bg-surface2 focus-visible:bg-bg-surface2 flex items-center border transition-colors h-8 w-full max-w-[224px] py-1.5 pl-3 pr-1.5 lg:max-w-[256px]">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-icon-tertiary">
+                        className="rounded-8 bg-bg-surface1 border-stroke-subtle hover:bg-bg-surface2 focus-visible:bg-bg-surface2 flex items-center border transition-colors h-8 w-8 md:w-full md:max-w-[224px] lg:max-w-[256px] py-1.5 px-0 md:pl-3 md:pr-1.5 justify-center md:justify-start shrink-0">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-icon-tertiary shrink-0">
                             <circle cx="11" cy="11" r="8"></circle>
                             <path d="m21 21-4.35-4.35"></path>
                         </svg>
-                        <div className="flex flex-1 items-center justify-between"><span className="label-2xs text-text-disabled mx-1">Search</span>
-                            <div className="rounded-4 h-4.5 w-4.5 bg-bg-surface2 hidden flex-shrink-0 items-center justify-center gap-2 md:flex">
+                        <div className="hidden md:flex flex-1 items-center justify-between ml-2">
+                            <span className="label-2xs text-text-disabled">Search</span>
+                            <div className="rounded-4 h-4.5 w-4.5 bg-bg-surface2 hidden flex-shrink-0 items-center justify-center gap-2 lg:flex">
                                 <span className="label-2xs text-text-tertiary">/</span>
                             </div>
                         </div>
                     </button>
 
-                    <div className="flex flex-shrink-0 items-center justify-end gap-2">
-                        <div className="flex items-center gap-3">
+                    <div className="flex flex-shrink-0 items-center justify-end gap-1.5 md:gap-2">
+                        <div className="flex items-center gap-1.5 md:gap-3">
                             {/* Balance Dropdown */}
                             <div className="relative">
-                                <div className="bg-bg-surface1 rounded-8 border-stroke-subtle flex h-8 max-w-[144px] flex-shrink-0 items-center overflow-hidden border">
-                                    <div className="cursor-pointer border-stroke-subtle hover:bg-bg-surface2 flex h-full items-center gap-1.5 overflow-hidden border-r px-3 transition-colors"
+                                <div className="bg-bg-surface1 rounded-8 border-stroke-subtle flex h-8 max-w-[100px] md:max-w-[144px] flex-shrink-0 items-center overflow-hidden border">
+                                    <div className="cursor-pointer border-stroke-subtle hover:bg-bg-surface2 flex h-full items-center gap-1 md:gap-1.5 overflow-hidden border-r px-2 md:px-3 transition-colors"
                                         onClick={() => setActiveDropdown(activeDropdown === 'balance' ? null : 'balance')}>
                                         <div className="flex flex-shrink-0 items-center justify-center" style={{ width: '16px', height: '16px' }}>
                                             <img src="https://cdn.trojan.com/coins/sol.svg" alt="SOL" className="w-4 h-4 rounded-full" />
                                         </div>
                                         <span className="label-sm text-text-primary truncate text-ellipsis">{solBalance.toFixed(2)}</span>
                                     </div>
-                                    <button className={`group h-full w-8 rounded-none flex items-center justify-center ${activeDropdown === 'balance' ? 'bg-bg-surface2' : ''}`}
+                                    <button className={`group h-full w-6 md:w-8 rounded-none flex items-center justify-center ${activeDropdown === 'balance' ? 'bg-bg-surface2' : ''}`}
                                         onClick={() => setActiveDropdown(activeDropdown === 'balance' ? null : 'balance')}>
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`text-icon-tertiary group-hover:text-icon-secondary transition-transform ${activeDropdown === 'balance' ? 'rotate-180' : ''}`}>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`text-icon-tertiary group-hover:text-icon-secondary transition-transform ${activeDropdown === 'balance' ? 'rotate-180' : ''}`}>
                                             <polyline points="6 9 12 15 18 9"></polyline>
                                         </svg>
                                     </button>
@@ -283,12 +283,12 @@ const Terminal = () => {
                             <div className="relative">
                                 <button className={`inline-flex items-center justify-center relative h-8 rounded-8 px-1.5 bg-neutral-900 hover:bg-neutral-850 border border-stroke-subtle transition-colors ${activeDropdown === 'profile' ? 'bg-neutral-850' : ''}`}
                                     onClick={() => setActiveDropdown(activeDropdown === 'profile' ? null : 'profile')}>
-                                    <div className="flex items-center gap-0.5 w-24">
-                                        <img src="https://cdn.trojan.com/arena/ranks/degen-level-1-honors1.webp" alt="Rank" style={{ width: '24px', height: '24px' }} />
-                                        <div className="bg-alpha-neutral-secondary ms-1 h-1 w-full overflow-hidden rounded-full">
+                                    <div className="flex items-center gap-0.5 md:w-24">
+                                        <img src="https://cdn.trojan.com/arena/ranks/degen-level-1-honors1.webp" alt="Rank" style={{ width: '24px', height: '24px' }} className="shrink-0" />
+                                        <div className="bg-alpha-neutral-secondary ms-1 h-1 w-full overflow-hidden rounded-full hidden md:block">
                                             <div className="h-1 rounded-full bg-[#C0A694]" style={{ width: '30%' }}></div>
                                         </div>
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`text-icon-tertiary h-4.5 w-4.5 shrink-0 transition-transform ${activeDropdown === 'profile' ? 'rotate-180' : ''}`}>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`text-icon-tertiary h-4.5 w-4.5 shrink-0 transition-transform ${activeDropdown === 'profile' ? 'rotate-180' : ''}`}>
                                             <polyline points="6 9 12 15 18 9"></polyline>
                                         </svg>
                                     </div>
@@ -374,11 +374,11 @@ const Terminal = () => {
 
                                 {/* Stats Bar */}
                                 <div className="mt-2">
-                                    <button className="bg-bg-surface1 rounded-8 divide-stroke-subtle grid w-full items-center divide-x px-1 py-2 text-center grid-cols-4 border border-stroke-subtle">
-                                        <div className="label-xs flex flex-col items-center gap-1"><span className="label-2xs text-text-tertiary">Bought</span><div className="text-accent-green">$0</div></div>
-                                        <div className="label-xs flex flex-col items-center gap-1"><span className="label-2xs text-text-tertiary">Sold</span><div className="text-accent-red">$0</div></div>
-                                        <div className="label-xs flex flex-col items-center gap-1"><span className="label-2xs text-text-tertiary">Bal.</span><div className="text-text-secondary">$0</div></div>
-                                        <div className="label-xs flex flex-col items-center gap-1"><span className="label-2xs text-text-tertiary">PNL</span><div className="text-text-primary">$0</div></div>
+                                    <button className="bg-bg-surface1 rounded-8 divide-stroke-subtle grid w-full items-center divide-x px-0.5 py-1.5 md:px-1 md:py-2 text-center grid-cols-4 border border-stroke-subtle">
+                                        <div className="flex flex-col items-center gap-0.5 md:gap-1"><span className="text-[9px] md:label-2xs text-text-tertiary">Bought</span><div className="text-[11px] md:label-xs text-accent-green font-medium">$0</div></div>
+                                        <div className="flex flex-col items-center gap-0.5 md:gap-1"><span className="text-[9px] md:label-2xs text-text-tertiary">Sold</span><div className="text-[11px] md:label-xs text-accent-red font-medium">$0</div></div>
+                                        <div className="flex flex-col items-center gap-0.5 md:gap-1"><span className="text-[9px] md:label-2xs text-text-tertiary">Bal.</span><div className="text-[11px] md:label-xs text-text-secondary font-medium">$0</div></div>
+                                        <div className="flex flex-col items-center gap-0.5 md:gap-1"><span className="text-[9px] md:label-2xs text-text-tertiary">PNL</span><div className="text-[11px] md:label-xs text-text-primary font-medium">$0</div></div>
                                     </button>
                                 </div>
                             </div>

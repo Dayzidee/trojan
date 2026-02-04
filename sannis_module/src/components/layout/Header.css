@@ -1,0 +1,109 @@
+/* CSS for the Trojan Header */
+
+.framer-t6nes-container {
+    width: 100%;
+    height: 80px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.framer-CHoph {
+    backdrop-filter: blur(4px);
+    background-color: rgba(1, 4, 9, 0.95);
+    -webkit-backdrop-filter: blur(4px);
+    height: 100%;
+    width: 100%;
+    max-width: 100vw;
+    border-bottom: 1px solid var(--token-d6845ff7-e6fa-4846-8707-749c541f6e69, rgba(142, 148, 157, 0.12));
+}
+
+.framer-1s2u6tg {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1440px;
+    margin: 0 auto;
+    height: 100%;
+    padding: 0 40px;
+}
+
+.framer-mo362l {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.framer-1s1gsqj {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.framer-1tfal73 {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    width: 115px;
+    max-width: 100%;
+}
+
+.framer-1bv9bvw {
+    display: flex;
+    gap: 24px;
+}
+
+.framer-text-color-gray {
+    color: var(--token-883b488b-309c-401f-a33d-b368a27cb2b0, rgb(142, 148, 157));
+}
+
+.framer-styles-preset-fpj2lh {
+    text-decoration: none;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--token-883b488b-309c-401f-a33d-b368a27cb2b0, rgb(142, 148, 157));
+    transition: color 0.2s ease;
+}
+
+.framer-styles-preset-fpj2lh:hover {
+    color: #fff;
+}
+
+.framer-xvaj9f {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.framer-tbvss {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: rgba(250, 204, 21, 0.1);
+    border: 1px solid rgba(250, 204, 21, 0.1);
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.framer-tbvss .framer-text {
+    color: rgb(255, 200, 0);
+    font-family: "Rouben Bold", sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+}
+
+.framer-QqP79 {
+    background-color: var(--token-73794cb1-40b8-4c79-a7ba-a556892c4516, rgb(13, 16, 21));
+    border: 1px solid var(--token-d6845ff7-e6fa-4846-8707-749c541f6e69, rgba(142, 148, 157, 0.12));
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+.framer-QqP79 .framer-text {
+    color: var(--token-75e3ff6e-4c91-4026-89f8-186f25b3a7e5, rgb(201, 204, 209));
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+}

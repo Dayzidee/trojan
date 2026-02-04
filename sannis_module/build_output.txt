@@ -1,0 +1,59 @@
+
+> sannis_module@0.0.0 build
+> tsc -b && vite build
+
+src/components/Layout.tsx(3,20): error TS2307: Cannot find module './Footer' or its corresponding type declarations.
+src/components/PublicLayout.tsx(3,20): error TS2307: Cannot find module './Header' or its corresponding type declarations.
+src/components/PublicLayout.tsx(5,20): error TS2307: Cannot find module './Footer' or its corresponding type declarations.
+src/components/layout/Footer.tsx(27,45): error TS2339: Property 'href' does not exist on type 'Element'.
+src/components/layout/Footer.tsx(66,12): error TS2339: Property '__framer_onRewriteBreakpoints' does not exist on type 'Window & typeof globalThis'.
+src/components/layout/Footer.tsx(76,122): error TS2353: Object literal may only specify known properties, and 'cornerShape' does not exist in type 'CSSProperties'.
+src/components/layout/Footer.tsx(76,400): error TS2353: Object literal may only specify known properties, and 'cornerShape' does not exist in type 'CSSProperties'.
+src/components/layout/Footer.tsx(159,86): error TS2322: Type '{ children: Element; className: string; "data-framer-name": string; name: string; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+src/components/layout/Footer.tsx(159,219): error TS2322: Type '{ children: Element[]; className: string; "data-framer-name": string; href: string; name: string; rel: string; target: "_blank"; }' is not assignable to type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+src/components/layout/Footer.tsx(169,86): error TS2322: Type '{ children: Element; className: string; "data-framer-name": string; name: string; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+src/components/layout/Footer.tsx(169,219): error TS2322: Type '{ children: Element[]; className: string; "data-framer-name": string; href: string; name: string; rel: string; target: "_blank"; }' is not assignable to type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+src/components/layout/Footer.tsx(179,86): error TS2322: Type '{ children: Element; className: string; "data-framer-name": string; name: string; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+src/components/layout/Footer.tsx(179,219): error TS2322: Type '{ children: Element[]; className: string; "data-framer-name": string; href: string; name: string; rel: string; target: "_blank"; }' is not assignable to type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+src/components/layout/Footer.tsx(189,84): error TS2322: Type '{ children: Element; className: string; "data-framer-name": string; name: string; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+src/components/layout/Footer.tsx(189,216): error TS2322: Type '{ children: Element[]; className: string; "data-framer-name": string; href: string; name: string; rel: string; target: "_blank"; }' is not assignable to type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+src/components/layout/Footer.tsx(199,84): error TS2322: Type '{ children: Element; className: string; "data-framer-name": string; name: string; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+src/components/layout/Footer.tsx(199,216): error TS2322: Type '{ children: Element[]; className: string; "data-framer-name": string; href: string; name: string; rel: string; target: "_blank"; }' is not assignable to type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+src/components/layout/Footer.tsx(209,84): error TS2322: Type '{ children: Element; className: string; "data-framer-name": string; name: string; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+src/components/layout/Footer.tsx(209,216): error TS2322: Type '{ children: Element[]; className: string; "data-framer-name": string; href: string; name: string; rel: string; target: "_blank"; }' is not assignable to type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+src/components/layout/Footer.tsx(219,87): error TS2322: Type '{ children: Element; className: string; "data-framer-name": string; name: string; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+src/components/layout/Footer.tsx(219,222): error TS2322: Type '{ children: Element[]; className: string; "data-framer-name": string; href: string; name: string; rel: string; target: "_blank"; }' is not assignable to type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+src/components/layout/Footer.tsx(229,87): error TS2322: Type '{ children: Element; className: string; "data-framer-name": string; name: string; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+src/components/layout/Footer.tsx(229,222): error TS2322: Type '{ children: Element[]; className: string; "data-framer-name": string; href: string; name: string; rel: string; target: "_blank"; }' is not assignable to type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+src/components/layout/Footer.tsx(239,87): error TS2322: Type '{ children: Element; className: string; "data-framer-name": string; name: string; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+src/components/layout/Footer.tsx(239,222): error TS2322: Type '{ children: Element[]; className: string; "data-framer-name": string; href: string; name: string; rel: string; target: "_blank"; }' is not assignable to type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+src/components/layout/Footer.tsx(249,86): error TS2322: Type '{ children: Element; className: string; "data-framer-name": string; name: string; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+src/components/layout/Footer.tsx(249,219): error TS2322: Type '{ children: Element[]; className: string; "data-framer-name": string; href: string; name: string; rel: string; target: "_blank"; }' is not assignable to type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+src/components/layout/Footer.tsx(259,86): error TS2322: Type '{ children: Element; className: string; "data-framer-name": string; name: string; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+src/components/layout/Footer.tsx(259,219): error TS2322: Type '{ children: Element[]; className: string; "data-framer-name": string; href: string; name: string; rel: string; target: "_blank"; }' is not assignable to type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+src/components/layout/Footer.tsx(269,86): error TS2322: Type '{ children: Element; className: string; "data-framer-name": string; name: string; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+src/components/layout/Footer.tsx(269,219): error TS2322: Type '{ children: Element[]; className: string; "data-framer-name": string; href: string; name: string; rel: string; target: "_blank"; }' is not assignable to type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>'.

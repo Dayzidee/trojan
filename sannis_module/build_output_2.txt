@@ -1,0 +1,40 @@
+
+> sannis_module@0.0.0 build
+> tsc -b && vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+
+/versions/3358492/assets/light-14LG-y7V.woff2 referenced in /versions/3358492/assets/light-14LG-y7V.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+
+/versions/3358492/assets/regular-COLGFB3M.woff2 referenced in /versions/3358492/assets/regular-COLGFB3M.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+
+/versions/3358492/assets/medium-CDhBSFyE.woff2 referenced in /versions/3358492/assets/medium-CDhBSFyE.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+
+/versions/3358492/assets/semibold-BAEEcJ4E.woff2 referenced in /versions/3358492/assets/semibold-BAEEcJ4E.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+
+/versions/3358492/assets/bold-BOs3KVhN.woff2 referenced in /versions/3358492/assets/bold-BOs3KVhN.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+
+/versions/3358492/assets/regular-B1gjSQcm.woff2 referenced in /versions/3358492/assets/regular-B1gjSQcm.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+
+/versions/3358492/assets/medium-BcrXNct6.woff2 referenced in /versions/3358492/assets/medium-BcrXNct6.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+
+/versions/3358492/assets/semibold-zNeYEfYl.woff2 referenced in /versions/3358492/assets/semibold-zNeYEfYl.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+
+/versions/3358492/assets/bold-0ihDFEWc.woff2 referenced in /versions/3358492/assets/bold-0ihDFEWc.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+
+/versions/3358492/assets/extrabold-CTvW46Ts.woff2 referenced in /versions/3358492/assets/extrabold-CTvW46Ts.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+
+/versions/3358492/assets/black-DZdNnnKj.woff2 referenced in /versions/3358492/assets/black-DZdNnnKj.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+✓ 61 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                     2.25 kB │ gzip:   0.78 kB
+dist/assets/index-CKpdsbaz.css    415.10 kB │ gzip:  62.72 kB
+dist/assets/index-Cofuhhxq.js   1,278.03 kB │ gzip: 175.87 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 8.07s

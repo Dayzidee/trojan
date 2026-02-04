@@ -1,0 +1,113 @@
+/* Trojan Custom Fonts */
+
+/* Redacted Font */
+@font-face {
+    font-family: 'Redacted';
+    font-style: normal;
+    font-weight: 400;
+    src: url('https://fonts.gstatic.com/s/redacted/v11/Z9XVDmdRShme2O_7aLTX6Oy0lw.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Redacted';
+    font-style: normal;
+    font-weight: 400;
+    src: url('https://fonts.gstatic.com/s/redacted/v11/Z9XVDmdRShme2O_7aLTZ6Ow.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Rouben Family */
+@font-face {
+    font-family: "Rouben Extra Bold";
+    src: url("/fonts/uhc7xn9piY1RMYqFdWWGj4HOHfc.woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 800;
+}
+
+@font-face {
+    font-family: "Rouben Bold";
+    src: url("/fonts/7gb4S53Bg4TlflbqiL9Qv1o7V2k.woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: "Rouben Medium";
+    src: url("/fonts/alYVQzpPTShWKydT3wQRGHfQ8.woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "Rouben Semi Bold";
+    src: url("/fonts/jFOpTUAtOThyJgjFYKXRjKaNN1U.woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "Rouben Regular";
+    src: url("/fonts/Jnt0rASkmyNWEVlTer1jLJOlkE.woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400;
+}
+
+/* Inter Family - Using Google Font URLs for better coverage or local files if preferred */
+/* Here I will use local assets for Inter as they are available in framer_assets */
+
+@font-face {
+    font-family: "Inter";
+    src: url("/fonts/5vvr9Vy74if2I6bQbJvbw7SY1pQ.woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("/fonts/UjlFhCnUjxhNfep4oYBPqnEssyo.woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("/fonts/hyOgCu0Xnghbimh0pE8QTvtt2AU.woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("/fonts/DpPBYI0sL4fYLgAkX8KXOPVt7c.woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 700;
+}
+
+/* Inter Display Family */
+@font-face {
+    font-family: "Inter Display";
+    src: url("/fonts/gazZKZuUEtvr9ULhdA4SprP0AZ0.woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: "Inter Display";
+    src: url("/fonts/I11LrmuBDQZweplJ62KkVsklU5Y.woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 700;
+}
+
+/* Add more specific unicode range Inter fonts if needed from local_fonts.css */

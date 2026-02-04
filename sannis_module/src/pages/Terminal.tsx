@@ -1,0 +1,548 @@
+// @ts-nocheck
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+import './Terminal.css';
+import TokenHeader from '../components/terminal/TokenHeader';
+import TradingPanel from '../components/terminal/TradingPanel';
+import WalletHoldings from '../components/terminal/WalletHoldings';
+
+const coins = ['SOL', 'BTC', 'ETH'];
+const coinData = {
+    SOL: {
+        name: 'Solana',
+        symbol: 'SOL',
+        price: '$145.20',
+        mcap: '$68.2B',
+        vol: '$2.4B',
+        liquidity: '$850M',
+        icon: 'https://cdn.trojan.com/coins/sol.svg',
+        isSvg: false
+    },
+    BTC: {
+        name: 'Bitcoin',
+        symbol: 'BTC',
+        price: '$64,230',
+        mcap: '$1.2T',
+        vol: '$35B',
+        liquidity: '$50B',
+        icon: '<svg width="18" height="18" viewBox="0 0 32 32" className="w-[18px] h-[18px]" xmlns="http://www.w3.org/2000/svg"><g fill="none" fillRule="evenodd"><circle cx="16" cy="16" r="16" fill="#F7931A" /><path d="M23.189 14.02c.314-2.096-1.283-3.223-3.465-3.975l.708-2.84-1.728-.43-.69 2.765c-.454-.114-.92-.22-1.385-.326l.695-2.783L15.596 6l-.708 2.839c-.376-.086-.746-.17-1.104-.26l.002-.009-2.384-.595-.46 1.846s1.283.294 1.256.312c.7.175.826.638.805 1.006l-.806 3.235c.048.012.11.03.18.057l-.183-.045-1.13 4.532c-.086.212-.303.531-.793.41.018.025-1.256-.313-1.256-.313l-.858 1.978 2.25.561c.418.105.828.215 1.231.318l-.715 2.872 1.727.43.708-2.84c.472.127.93.245 1.378.357l-.706 2.828 1.728.43.715-2.866c2.948.558 5.164.333 6.097-2.333.752-2.146-.037-3.385-1.588-4.192 1.13-.26 1.98-1.003 2.207-2.538zm-3.95 5.538c-.533 2.147-4.148.986-5.32.695l.95-3.805c1.172.293 4.929.872 4.37 3.11zm.535-5.569c-.487 1.953-3.495.96-4.47.717l.86-3.45c.975.243 4.118.696 3.61 2.733z" fill="#FFF" /></g></svg>',
+        isSvg: true
+    },
+    ETH: {
+        name: 'Ethereum',
+        symbol: 'ETH',
+        price: '$3,450',
+        mcap: '$400B',
+        vol: '$15B',
+        liquidity: '$20B',
+        icon: '<svg width="18" height="18" viewBox="0 0 32 32" className="w-[18px] h-[18px]" xmlns="http://www.w3.org/2000/svg"><g fill="none" fillRule="evenodd"><circle cx="16" cy="16" r="16" fill="#627EEA" /><g fill="#FFF" fillRule="nonzero"><path d="M16.498 4v8.87l7.497 3.35z" fillOpacity=".602" /><path d="M16.498 4L9 16.22l7.498-3.35z" /><path d="M16.498 21.968v6.027L24 17.616z" fillOpacity=".602" /><path d="M16.498 27.995v-6.028L9 17.616z" /><path d="M16.498 20.573l7.497-4.353-7.497-3.348z" fillOpacity=".2" /><path d="M9 16.22l7.498 4.353v-7.701z" fillOpacity=".602" /></g></g></svg>',
+        isSvg: true
+    }
+};
+
+const Terminal = () => {
+    const [activeModal, setActiveModal] = React.useState<string | null>(null);
+    const [activeTab, setActiveTab] = React.useState('terminal');
+    const [currentCoinIndex, setCurrentCoinIndex] = React.useState(0);
+    const [currentAction, setCurrentAction] = React.useState<'buy' | 'sell'>('buy');
+    const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null);
+    const [showSearch, setShowSearch] = React.useState(false);
+
+    // Live Price State
+    const [prices, setPrices] = React.useState({
+        SOL: 145.20,
+        BTC: 64230.50,
+        ETH: 3450.75
+    });
+
+    // Simulate price fluctuations
+    React.useEffect(() => {
+        const interval = setInterval(() => {
+            setPrices(prev => ({
+                SOL: prev.SOL + (Math.random() - 0.5) * 0.2,
+                BTC: prev.BTC + (Math.random() - 0.5) * 10,
+                ETH: prev.ETH + (Math.random() - 0.5) * 1,
+            }));
+        }, 3000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const currentCoinSymbol = coins[currentCoinIndex];
+
+    // Derived coin data
+    const currentCoinData = React.useMemo(() => {
+        const base = coinData[currentCoinSymbol];
+        return {
+            ...base,
+            price: currentCoinSymbol === 'SOL'
+                ? `$${prices.SOL.toFixed(2)}`
+                : `$${prices[currentCoinSymbol].toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+        };
+    }, [currentCoinIndex, prices]);
+
+    // Wallet Balance State
+    const [solBalance, setSolBalance] = React.useState(1.24);
+
+    const closeModal = () => setActiveModal(null);
+
+    const toggleCoinSelection = () => {
+        setCurrentCoinIndex((prev) => (prev + 1) % coins.length);
+    };
+
+    const toggleTradeAction = (action: 'buy' | 'sell') => {
+        setCurrentAction(action);
+    };
+
+    const copyDepositAddress = () => {
+        const copyText = document.getElementById("deposit-address-input") as HTMLInputElement;
+        if (copyText) {
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                alert('Address copied!');
+            });
+        }
+    };
+
+    const showWithdrawModal = activeModal === 'withdraw';
+    const showDepositModal = activeModal === 'deposit';
+    const showConnectModal = activeModal === 'connect';
+
+    return (
+        <main id=":R1ja:" className="grid h-screen w-screen overflow-hidden bg-black"
+            style={{ gridTemplateRows: '64px auto 1fr', gridTemplateColumns: '1fr' }}>
+            <nav className="bg-bg-base !pointer-events-auto flex w-full flex-shrink-0 items-center justify-between px-4 border-b border-stroke-subtle"
+                style={{ height: '64px' }}>
+                {/* Logo */}
+                <div className="flex items-center gap-6">
+                    <a href="#" className="active" data-status="active" aria-current="page">
+                        <div className="flex items-center gap-1.5">
+                            <div className="" style={{ width: '36px', height: '36px' }}>
+                                <img src="./canvas.png" alt="Trojan Icon" style={{ width: '36px', height: '36px', borderRadius: '50%' }} />
+                            </div>
+                            <img alt="Trojan" src="/logo-text-only.svg" className="mt-1 h-[20px] w-[81px]" />
+                        </div>
+                    </a>
+
+                    {/* Added Navigation Links */}
+                    <div className="hidden md:flex items-center gap-4">
+                        <Link to="/" className="text-text-secondary hover:text-text-primary transition-colors text-sm font-medium">Home</Link>
+                        <Link to="/terminal" className="text-text-primary text-sm font-medium">Terminal</Link>
+                        <Link to="/blog" className="text-text-secondary hover:text-text-primary transition-colors text-sm font-medium">Blog</Link>
+                    </div>
+                </div>
+
+                {/* Right Side: Search, Balance, Notifications */}
+                <div className="flex items-center justify-end gap-3">
+                    {/* Search Button */}
+                    {/* Search Button */}
+                    <button
+                        onClick={() => setShowSearch(true)}
+                        className="rounded-8 bg-bg-surface1 border-stroke-subtle hover:bg-bg-surface2 focus-visible:bg-bg-surface2 flex items-center border transition-colors h-8 w-full max-w-[224px] py-1.5 pl-3 pr-1.5 lg:max-w-[256px]">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-icon-tertiary">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <div className="flex flex-1 items-center justify-between"><span className="label-2xs text-text-disabled mx-1">Search</span>
+                            <div className="rounded-4 h-4.5 w-4.5 bg-bg-surface2 hidden flex-shrink-0 items-center justify-center gap-2 md:flex">
+                                <span className="label-2xs text-text-tertiary">/</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <div className="flex flex-shrink-0 items-center justify-end gap-2">
+                        <div className="flex items-center gap-3">
+                            {/* Balance Dropdown */}
+                            <div className="relative">
+                                <div className="bg-bg-surface1 rounded-8 border-stroke-subtle flex h-8 max-w-[144px] flex-shrink-0 items-center overflow-hidden border">
+                                    <div className="cursor-pointer border-stroke-subtle hover:bg-bg-surface2 flex h-full items-center gap-1.5 overflow-hidden border-r px-3 transition-colors"
+                                        onClick={() => setActiveDropdown(activeDropdown === 'balance' ? null : 'balance')}>
+                                        <div className="flex flex-shrink-0 items-center justify-center" style={{ width: '16px', height: '16px' }}>
+                                            <img src="https://cdn.trojan.com/coins/sol.svg" alt="SOL" className="w-4 h-4 rounded-full" />
+                                        </div>
+                                        <span className="label-sm text-text-primary truncate text-ellipsis">{solBalance.toFixed(2)}</span>
+                                    </div>
+                                    <button className={`group h-full w-8 rounded-none flex items-center justify-center ${activeDropdown === 'balance' ? 'bg-bg-surface2' : ''}`}
+                                        onClick={() => setActiveDropdown(activeDropdown === 'balance' ? null : 'balance')}>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`text-icon-tertiary group-hover:text-icon-secondary transition-transform ${activeDropdown === 'balance' ? 'rotate-180' : ''}`}>
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                {activeDropdown === 'balance' && (
+                                    <div className="absolute top-full mt-2 right-0 z-50 w-56 rounded-8 bg-bg-surface1 border border-stroke-subtle shadow-xl animate-in fade-in zoom-in-95 duration-100">
+                                        <div className="p-2">
+                                            <div className="label-2xs text-text-tertiary px-2 py-1">Select Chain</div>
+                                            {[
+                                                { name: 'Solana', symbol: 'SOL', icon: 'https://cdn.trojan.com/coins/sol.svg' },
+                                                { name: 'Ethereum', symbol: 'ETH', isEth: true },
+                                                { name: 'Bitcoin', symbol: 'BTC', isBtc: true }
+                                            ].map((chain) => (
+                                                <button key={chain.symbol} className="w-full flex items-center gap-2 px-3 py-2 rounded-6 hover:bg-bg-surface2 transition-colors">
+                                                    {chain.icon ? <img src={chain.icon} className="w-5 h-5 rounded-full" /> :
+                                                        chain.isEth ? <div className="w-5 h-5 rounded-full bg-[#627EEA] flex items-center justify-center text-[10px] text-white font-bold">Ξ</div> :
+                                                            <div className="w-5 h-5 rounded-full bg-[#F7931A] flex items-center justify-center text-[10px] text-white font-bold">₿</div>
+                                                    }
+                                                    <div className="flex-1 text-left">
+                                                        <div className="label-xs text-text-primary">{chain.name}</div>
+                                                        <div className="label-2xs text-text-tertiary">{chain.symbol} · 0.00</div>
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <div className="border-t border-stroke-subtle">
+                                            <a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('wallet'); setActiveDropdown(null); }} className="flex items-center gap-2 px-4 py-2.5 hover:bg-bg-surface2 transition-colors">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-icon-tertiary">
+                                                    <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+                                                    <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+                                                    <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
+                                                </svg>
+                                                <span className="label-xs text-text-secondary">View All Wallets</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Notifications */}
+                            {/* Notifications */}
+                            <div className="relative">
+                                <button
+                                    onClick={() => setActiveDropdown(activeDropdown === 'notifications' ? null : 'notifications')}
+                                    className={`inline-flex items-center justify-center relative h-8 w-8 rounded-8 hover:bg-neutral-850 border border-stroke-subtle transition-colors text-icon-tertiary hover:text-icon-secondary ${activeDropdown === 'notifications' ? 'bg-neutral-850' : 'bg-neutral-900'}`}>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                                    </svg>
+                                    <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[9px] font-bold">3</span>
+                                </button>
+                                {activeDropdown === 'notifications' && (
+                                    <div className="absolute top-full mt-2 right-0 z-50 w-80 rounded-8 bg-bg-surface2 border border-stroke-subtle shadow-xl animate-in fade-in zoom-in-95 duration-100 overflow-hidden">
+                                        <div className="p-3 border-b border-stroke-subtle flex justify-between items-center">
+                                            <span className="label-sm font-medium text-text-primary">Notifications</span>
+                                            <button className="label-xs text-accent-green hover:underline">Mark all read</button>
+                                        </div>
+                                        <div className="max-h-[320px] overflow-y-auto">
+                                            {[1, 2, 3].map((i) => (
+                                                <div key={i} className="p-3 border-b border-stroke-subtle hover:bg-bg-surface3 transition-colors cursor-pointer">
+                                                    <div className="flex gap-3">
+                                                        <div className="w-8 h-8 rounded-full bg-accent-green/10 flex items-center justify-center text-accent-green shrink-0">
+                                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M2 12h20" /></svg>
+                                                        </div>
+                                                        <div>
+                                                            <div className="text-xs text-text-primary font-medium">Order Filled</div>
+                                                            <div className="text-[10px] text-text-tertiary mt-0.5">Your buy order for 5.0 SOL was successfully filled at $145.20.</div>
+                                                            <div className="text-[10px] text-text-disabled mt-1.5">2 mins ago</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Profile Dropdown */}
+                            <div className="relative">
+                                <button className={`inline-flex items-center justify-center relative h-8 rounded-8 px-1.5 bg-neutral-900 hover:bg-neutral-850 border border-stroke-subtle transition-colors ${activeDropdown === 'profile' ? 'bg-neutral-850' : ''}`}
+                                    onClick={() => setActiveDropdown(activeDropdown === 'profile' ? null : 'profile')}>
+                                    <div className="flex items-center gap-0.5 w-24">
+                                        <img src="https://cdn.trojan.com/arena/ranks/degen-level-1-honors1.webp" alt="Rank" style={{ width: '24px', height: '24px' }} />
+                                        <div className="bg-alpha-neutral-secondary ms-1 h-1 w-full overflow-hidden rounded-full">
+                                            <div className="h-1 rounded-full bg-[#C0A694]" style={{ width: '30%' }}></div>
+                                        </div>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`text-icon-tertiary h-4.5 w-4.5 shrink-0 transition-transform ${activeDropdown === 'profile' ? 'rotate-180' : ''}`}>
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </div>
+                                </button>
+
+                                {activeDropdown === 'profile' && (
+                                    <div className="absolute top-full mt-2 right-0 z-50 w-60 rounded-8 bg-bg-surface2 border border-stroke-subtle shadow-xl animate-in fade-in zoom-in-95 duration-100 overflow-hidden">
+                                        <div className="p-3 border-b border-stroke-subtle">
+                                            <div className="flex items-center justify-between mb-2">
+                                                <span className="text-xs text-text-secondary">Logged in:</span>
+                                                <span className="text-sm font-medium text-text-primary">duns</span>
+                                            </div>
+                                            <div className="p-2 bg-neutral-800 rounded-8 flex items-center gap-3 border border-stroke-subtle">
+                                                <img src="https://cdn.trojan.com/arena/ranks/degen-level-1-honors1.webp" className="w-10 h-10" />
+                                                <div>
+                                                    <div className="text-xs font-bold text-[#C0A694] uppercase">DEGEN I</div>
+                                                    <div className="text-[10px] text-text-tertiary uppercase">HONORS I</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="p-1">
+                                            <button
+                                                onClick={() => { setActiveTab('wallet'); setActiveDropdown(null); }}
+                                                className="w-full flex items-center gap-2 p-2 hover:bg-alpha-neutral-tertiary rounded-6 transition-colors text-xs text-text-secondary">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path></svg>
+                                                Manage Wallets
+                                            </button>
+                                            <button className="w-full flex items-center gap-2 p-2 hover:bg-alpha-neutral-tertiary rounded-6 transition-colors text-xs text-text-secondary">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><path d="M12 17h.01"></path></svg>
+                                                Support
+                                            </button>
+                                            <button className="w-full flex items-center gap-2 p-2 hover:bg-alpha-neutral-tertiary rounded-6 transition-colors text-xs text-text-secondary text-accent-red hover:text-accent-red">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
+                                                Logout
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            {/* React Tab Navigation */}
+            <div className="flex items-center gap-4 px-4 py-2 bg-black border-b border-stroke-subtle z-10">
+                <button onClick={() => setActiveTab('terminal')} className={`text-sm font-medium ${activeTab === 'terminal' ? 'text-accent-green' : 'text-text-tertiary'}`}>Terminal</button>
+                <button onClick={() => setActiveTab('swap')} className={`text-sm font-medium ${activeTab === 'swap' ? 'text-accent-green' : 'text-text-tertiary'}`}>Swap</button>
+                <button onClick={() => setActiveTab('wallet')} className={`text-sm font-medium ${activeTab === 'wallet' ? 'text-accent-green' : 'text-text-tertiary'}`}>Wallet</button>
+            </div>
+
+            {/* Main Content Area: Responds to Tabs */}
+            <div className="flex-1 overflow-hidden relative">
+
+                {/* TERMINAL TAB */}
+                {activeTab === 'terminal' && (
+                    <div className="flex flex-col lg:flex-row h-full w-full overflow-hidden">
+                        {/* Left Column: Wallet Holdings (Desktop only) */}
+                        <div className="hidden lg:flex w-[35%] flex-col border-r border-stroke-subtle bg-bg-surface1 p-2 overflow-y-auto">
+                            <WalletHoldings
+                                solBalance={solBalance}
+                                onDeposit={() => setActiveModal('deposit')}
+                                onWithdraw={() => setActiveModal('withdraw')}
+                                onConnect={() => setActiveModal('connect')}
+                                onManage={() => setActiveModal('connect')}
+                            />
+                        </div>
+
+                        {/* Center Column: Trading Panel */}
+                        <div className="flex-1 flex flex-col min-w-0 bg-bg-surface1 overflow-y-auto">
+                            <div className="p-4 max-w-3xl mx-auto w-full flex flex-col gap-4">
+                                <TokenHeader
+                                    coin={currentCoinData}
+                                    currentAction={currentAction}
+                                    onToggleCoin={toggleCoinSelection}
+                                    allCoinData={coinData}
+                                    availableCoins={coins}
+                                    onSelectCoin={setCurrentCoinIndex}
+                                />
+
+                                <div className="mt-4">
+                                    <TradingPanel currentAction={currentAction} onToggleAction={toggleTradeAction} />
+                                </div>
+
+                                {/* Stats Bar */}
+                                <div className="mt-2">
+                                    <button className="bg-bg-surface1 rounded-8 divide-stroke-subtle grid w-full items-center divide-x px-1 py-2 text-center grid-cols-4 border border-stroke-subtle">
+                                        <div className="label-xs flex flex-col items-center gap-1"><span className="label-2xs text-text-tertiary">Bought</span><div className="text-accent-green">$0</div></div>
+                                        <div className="label-xs flex flex-col items-center gap-1"><span className="label-2xs text-text-tertiary">Sold</span><div className="text-accent-red">$0</div></div>
+                                        <div className="label-xs flex flex-col items-center gap-1"><span className="label-2xs text-text-tertiary">Bal.</span><div className="text-text-secondary">$0</div></div>
+                                        <div className="label-xs flex flex-col items-center gap-1"><span className="label-2xs text-text-tertiary">PNL</span><div className="text-text-primary">$0</div></div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* SWAP TAB */}
+                {activeTab === 'swap' && (
+                    <div className="flex items-center justify-center h-full p-4 overflow-y-auto">
+                        <div className="max-w-[480px] w-full bg-bg-surface1 border border-stroke-subtle rounded-16 p-6 shadow-2xl my-8">
+                            <div className="flex flex-col gap-4">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <svg width="20" height="20" stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" className="text-text-primary"><path d="M7 10h14l-4-4m0 8h-14l4 4" /></svg>
+                                    <span className="text-lg font-bold text-text-primary">Swap</span>
+                                </div>
+
+                                <div className="bg-bg-surface2 rounded-8 p-4 border border-neutral-800">
+                                    <div className="text-xs text-text-tertiary mb-2">You Swap</div>
+                                    <div className="flex items-center justify-between">
+                                        <input className="bg-transparent text-2xl outline-none w-full text-text-primary placeholder-text-disabled" placeholder="0" />
+                                        <div className="flex items-center gap-2 bg-neutral-800 px-3 py-1.5 rounded-8 border border-stroke-subtle">
+                                            <img src="https://cdn.trojan.com/coins/sol.svg" className="w-5 h-5 rounded-full" alt="SOL" />
+                                            <span className="text-text-primary font-medium">SOL</span>
+                                        </div>
+                                    </div>
+                                    <div className="text-right text-xs text-text-tertiary mt-1">Balance: {solBalance.toFixed(2)}</div>
+                                </div>
+
+                                <div className="flex justify-center -my-6 z-10 relative">
+                                    <div className="bg-bg-surface1 p-2 rounded-full border border-neutral-800 shadow-sm cursor-pointer hover:bg-bg-surface2 transition-colors">
+                                        <svg width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" className="text-text-secondary"><path d="M12 5v14M19 12l-7 7-7-7" /></svg>
+                                    </div>
+                                </div>
+
+                                <div className="bg-bg-surface2 rounded-8 p-4 border border-neutral-800 mt-2">
+                                    <div className="text-xs text-text-tertiary mb-2">You Receive</div>
+                                    <div className="flex items-center justify-between">
+                                        <input className="bg-transparent text-2xl outline-none w-full text-text-primary placeholder-text-disabled" placeholder="0" readOnly />
+                                        <div className="flex items-center gap-2 bg-neutral-800 px-3 py-1.5 rounded-8 border border-stroke-subtle cursor-pointer hover:bg-neutral-700 transition-colors">
+                                            <span className="text-text-primary font-medium">Select Token</span>
+                                            <svg width="12" height="12" stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" className="text-text-secondary"><path d="M6 9l6 6 6-6" /></svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button className="w-full bg-accent-green text-black py-3.5 rounded-8 font-bold mt-2 hover:bg-opacity-90 transition-opacity">Swap</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* WALLET TAB */}
+                {activeTab === 'wallet' && (
+                    <div className="flex flex-col h-full w-full p-4 overflow-y-auto">
+                        <div className="max-w-4xl mx-auto w-full">
+                            <div className="flex justify-between items-center mb-6">
+                                <h2 className="text-2xl font-bold text-text-primary">Manage Wallets</h2>
+                                <div className="flex gap-2">
+                                    <button onClick={() => setActiveModal('deposit')} className="px-4 py-2 bg-accent-green text-black rounded-8 font-medium hover:bg-opacity-90 transition-opacity">Deposit</button>
+                                    <button onClick={() => setActiveModal('withdraw')} className="px-4 py-2 bg-bg-surface2 text-text-primary rounded-8 border border-stroke-subtle font-medium hover:bg-bg-surface3 transition-colors">Withdraw</button>
+                                </div>
+                            </div>
+                            <WalletHoldings
+                                solBalance={solBalance}
+                                onDeposit={() => setActiveModal('deposit')}
+                                onWithdraw={() => setActiveModal('withdraw')}
+                            />
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {/* MODALS (Global Overlay) */}
+            {showWithdrawModal && (
+                <div id="withdraw-modal" className="modal-overlay open fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                    <div className="modal-content bg-bg-surface1 border border-stroke-subtle rounded-12 p-6 w-full max-w-md shadow-2xl">
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-lg font-bold text-text-primary">Withdraw</h3>
+                            <button className="text-text-tertiary hover:text-text-primary transition-colors" onClick={closeModal}>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                        </div>
+                        <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-1.5">
+                                <label className="text-xs text-text-tertiary">Destination Address</label>
+                                <input type="text" className="bg-bg-surface2 border border-stroke-subtle rounded-8 px-3 py-2 text-text-primary outline-none focus:border-accent-green" placeholder="Solana Address" />
+                            </div>
+                            <div className="flex flex-col gap-1.5">
+                                <label className="text-xs text-text-tertiary">Amount (SOL)</label>
+                                <input type="number" className="bg-bg-surface2 border border-stroke-subtle rounded-8 px-3 py-2 text-text-primary outline-none focus:border-accent-green" placeholder="0.00" />
+                            </div>
+                        </div>
+                        <div className="flex gap-3 mt-8">
+                            <button className="flex-1 px-4 py-2 rounded-8 border border-stroke-subtle text-text-secondary hover:bg-bg-surface2 transition-colors" onClick={closeModal}>Cancel</button>
+                            <button className="flex-1 px-4 py-2 rounded-8 bg-accent-green text-black font-medium hover:bg-opacity-90 transition-opacity">Confirm Withdraw</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {showSearch && (
+                <div className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-start justify-center pt-[20vh]" onClick={() => setShowSearch(false)}>
+                    <div className="w-full max-w-2xl bg-bg-surface1 border border-stroke-subtle rounded-12 shadow-2xl overflow-hidden" onClick={e => e.stopPropagation()}>
+                        <div className="flex items-center gap-3 p-4 border-b border-stroke-subtle">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-text-tertiary">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            <input
+                                autoFocus
+                                type="text"
+                                placeholder="Search by token, name or address..."
+                                className="flex-1 bg-transparent outline-none text-lg text-text-primary placeholder:text-text-disabled"
+                            />
+                            <div className="flex items-center gap-1.5">
+                                <span className="text-[10px] bg-bg-surface2 border border-stroke-subtle px-1.5 py-0.5 rounded-4 text-text-tertiary">ESC</span>
+                            </div>
+                        </div>
+                        <div className="max-h-[60vh] overflow-y-auto p-2">
+                            <div className="px-2 py-1.5 text-xs text-text-tertiary font-medium">Trending</div>
+                            {['Popcat', 'WIF', 'BONK'].map(token => (
+                                <div key={token} className="flex items-center gap-3 p-2 hover:bg-bg-surface2 rounded-8 cursor-pointer transition-colors group">
+                                    <div className="w-8 h-8 rounded-full bg-accent-green/10 flex items-center justify-center text-accent-green font-bold text-xs">{token[0]}</div>
+                                    <div className="flex-1">
+                                        <div className="flex justify-between">
+                                            <span className="text-sm font-medium text-text-primary">{token}</span>
+                                            <span className="text-xs text-accent-green">+12.5%</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-xs text-text-tertiary">Solana</span>
+                                            <span className="text-xs text-text-secondary">$12.4M Vol</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+            {showDepositModal && (
+                <div id="deposit-modal" className="modal-overlay open fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                    <div className="modal-content bg-bg-surface1 border border-stroke-subtle rounded-12 p-6 w-full max-w-md shadow-2xl">
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-lg font-bold text-text-primary">Deposit</h3>
+                            <button className="text-text-tertiary hover:text-text-primary transition-colors" onClick={closeModal}>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                        </div>
+                        <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-1.5">
+                                <label className="text-xs text-text-tertiary">Your Deposit Address</label>
+                                <div className="flex gap-2">
+                                    <input type="text" className="flex-1 bg-bg-surface2 border border-stroke-subtle rounded-8 px-3 py-2 text-text-secondary text-sm outline-none" value="8GwkvRuPPnbZ9ZD69nehfmG1fu1pU54WZW7oy4pwoupv" readOnly id="deposit-address-input" />
+                                    <button className="px-3 py-2 rounded-8 border border-stroke-subtle hover:bg-bg-surface2 text-icon-secondary transition-colors" onClick={copyDepositAddress}>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                </div>
+                                <p className="text-[11px] text-text-tertiary">Send SOL to this address to deposit.</p>
+                            </div>
+                            <div className="flex justify-center mt-4 bg-white p-3 rounded-12 w-fit mx-auto">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=8GwkvRuPPnbZ9ZD69nehfmG1fu1pU54WZW7oy4pwoupv" alt="QR Code" width="150" height="150" />
+                            </div>
+                        </div>
+                        <div className="mt-6">
+                            <button className="w-full px-4 py-2.5 rounded-8 bg-bg-surface2 hover:bg-bg-surface3 text-text-primary border border-stroke-subtle transition-colors" onClick={closeModal}>Close</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {showConnectModal && (
+                <div id="connect-modal" className="modal-overlay open fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md">
+                    <div className="modal-content bg-bg-surface1 border border-stroke-subtle rounded-16 p-6 w-full max-w-sm shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-xl font-bold text-text-primary">Connect Wallet</h3>
+                            <button className="text-text-tertiary hover:text-text-primary transition-colors" onClick={closeModal}>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            {['Phantom', 'Solflare', 'Backpack', 'Ledger'].map((wallet) => (
+                                <button key={wallet} className="flex items-center justify-between p-4 rounded-12 bg-bg-surface2 hover:bg-bg-surface3 border border-stroke-subtle transition-all group">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-full bg-text-primary flex items-center justify-center text-bg-base font-bold text-xs">{wallet[0]}</div>
+                                        <span className="text-text-primary font-medium">{wallet}</span>
+                                    </div>
+                                    <div className="w-2 h-2 rounded-full bg-accent-green opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                </button>
+                            ))}
+                        </div>
+                        <p className="text-xs text-text-tertiary text-center mt-6">
+                            By connecting, you agree to our <span className="text-text-secondary hover:underline cursor-pointer">Terms of Service</span>.
+                        </p>
+                    </div>
+                </div>
+            )}
+        </main>
+    );
+};
+
+export default Terminal;

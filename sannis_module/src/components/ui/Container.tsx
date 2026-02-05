@@ -1,20 +1,26 @@
 import React from 'react';
-import { cn } from '../../utils/cn'; // Assuming a utility for class merging exists, otherwise I'll create one or use template literals
+import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
     className?: string;
+    fullWidth?: boolean;
 }
 
-const Container: React.FC<ContainerProps> = ({ children, className, ...props }) => {
+export function Container({ children, className, fullWidth = false, ...props }: ContainerProps) {
     return (
         <div
-            className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full ${className || ''}`}
+            className={twMerge(
+                clsx(
+                    'w-full mx-auto',
+                    !fullWidth && 'px-[var(--pad-x)] max-w-[2400px]',
+                    className
+                )
+            )}
             {...props}
         >
             {children}
         </div>
     );
-};
-
-export default Container;
+}

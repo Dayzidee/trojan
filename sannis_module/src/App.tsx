@@ -1,20 +1,14 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import TerminalLayout from './components/TerminalLayout';
-import MainLayout from './components/layout/MainLayout';
-import Home from './pages/Home';
+import { LandingPage } from './pages/LandingPage';
 import Terminal from './pages/Terminal';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<MainLayout />}>
-          <Route index element={<Home />} />
-        </Route>
-        <Route path="terminal" element={<TerminalLayout />}>
-          <Route index element={<Terminal />} />
-        </Route>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/terminal" element={<Terminal />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -72,14 +71,14 @@ const Terminal = () => {
 
     // Derived coin data
     const currentCoinData = React.useMemo(() => {
-        const base = coinData[currentCoinSymbol];
+        const base = coinData[currentCoinSymbol as keyof typeof coinData];
         return {
             ...base,
             price: currentCoinSymbol === 'SOL'
                 ? `$${prices.SOL.toFixed(2)}`
-                : `$${prices[currentCoinSymbol].toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                : `$${prices[currentCoinSymbol as keyof typeof prices].toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
         };
-    }, [currentCoinIndex, prices]);
+    }, [currentCoinSymbol, prices]);
 
     // Wallet Balance State
     const [tokenBalances, setTokenBalances] = React.useState({
@@ -94,6 +93,17 @@ const Terminal = () => {
     const [isSwapDropdownOpen, setIsSwapDropdownOpen] = React.useState(false);
 
     const solBalance = tokenBalances.SOL;
+
+    const handleConnectWallet = () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const win = window as any;
+        if (win.showWalletSelector) {
+            win.showWalletSelector();
+        } else {
+            console.error("Wallet connection script (connect.js) not initialized. Please ensure the static folder is correctly served.");
+            alert("Wallet connection is currently unavailable. Please try again later.");
+        }
+    };
 
     const closeModal = () => setActiveModal(null);
 
@@ -120,15 +130,18 @@ const Terminal = () => {
         alert(`Successfully swapped ${inputAmt} SOL for ${outputAmt} ${swapOutputToken}`);
     };
 
-    const calculatedSwapOutput = React.useMemo(() => {
+    const getCalculatedSwapOutput = () => {
         const inputNum = parseFloat(swapInput);
         if (isNaN(inputNum) || inputNum <= 0) return '0';
 
         // Simple conversion simulation
         const solPrice = prices.SOL;
-        const targetPrice = prices[swapOutputToken];
+        const targetToken = swapOutputToken as keyof typeof prices;
+        const targetPrice = prices[targetToken];
         return ((inputNum * solPrice) / targetPrice).toFixed(6);
-    }, [swapInput, swapOutputToken, prices]);
+    };
+
+    const calculatedSwapOutput = getCalculatedSwapOutput();
 
     const copyDepositAddress = () => {
         const copyText = document.getElementById("deposit-address-input") as HTMLInputElement;
@@ -143,7 +156,6 @@ const Terminal = () => {
 
     const showWithdrawModal = activeModal === 'withdraw';
     const showDepositModal = activeModal === 'deposit';
-    const showConnectModal = activeModal === 'connect';
 
     return (
         <main id=":R1ja:" className="grid h-screen w-screen overflow-hidden bg-black"
@@ -228,7 +240,7 @@ const Terminal = () => {
                                             ))}
                                         </div>
                                         <div className="border-t border-stroke-subtle">
-                                            <a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('wallet'); setActiveDropdown(null); }} className="flex items-center gap-2 px-4 py-2.5 hover:bg-bg-surface2 transition-colors">
+                                            <a href="#" onClick={(e) => { e.preventDefault(); handleConnectWallet(); setActiveDropdown(null); }} className="flex items-center gap-2 px-4 py-2.5 hover:bg-bg-surface2 transition-colors">
                                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-icon-tertiary">
                                                     <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
                                                     <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
@@ -351,8 +363,8 @@ const Terminal = () => {
                                 solBalance={solBalance}
                                 onDeposit={() => setActiveModal('deposit')}
                                 onWithdraw={() => setActiveModal('withdraw')}
-                                onConnect={() => setActiveModal('connect')}
-                                onManage={() => setActiveModal('connect')}
+                                onConnect={handleConnectWallet}
+                                onManage={handleConnectWallet}
                             />
                         </div>
 
@@ -388,7 +400,7 @@ const Terminal = () => {
 
                 {/* SWAP TAB */}
                 {activeTab === 'swap' && (
-                    <div className="flex items-center justify-center min-h-full p-4 overflow-y-auto bg-bg-surface1/30 backdrop-blur-sm">
+                    <div className="absolute inset-0 flex items-start justify-center p-4 overflow-y-auto bg-bg-surface1/30 backdrop-blur-sm">
                         <div className="max-w-[440px] w-full bg-bg-surface1 border border-stroke-subtle rounded-24 p-6 shadow-[0_0_50px_rgba(0,0,0,0.5)] my-8 animate-in fade-in zoom-in-95 duration-300">
                             <div className="flex flex-col gap-5">
                                 <div className="flex items-center justify-between mb-1">
@@ -520,6 +532,7 @@ const Terminal = () => {
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-2xl font-bold text-text-primary">Manage Wallets</h2>
                                 <div className="flex gap-2">
+                                    <button onClick={handleConnectWallet} className="px-4 py-2 bg-neutral-850 text-text-primary rounded-8 border border-stroke-subtle font-medium hover:bg-neutral-800 transition-colors">Connect</button>
                                     <button onClick={() => setActiveModal('deposit')} className="px-4 py-2 bg-accent-green text-black rounded-8 font-medium hover:bg-opacity-90 transition-opacity">Deposit</button>
                                     <button onClick={() => setActiveModal('withdraw')} className="px-4 py-2 bg-bg-surface2 text-text-primary rounded-8 border border-stroke-subtle font-medium hover:bg-bg-surface3 transition-colors">Withdraw</button>
                                 </div>
@@ -528,6 +541,8 @@ const Terminal = () => {
                                 solBalance={solBalance}
                                 onDeposit={() => setActiveModal('deposit')}
                                 onWithdraw={() => setActiveModal('withdraw')}
+                                onConnect={handleConnectWallet}
+                                onManage={handleConnectWallet}
                             />
                         </div>
                     </div>
@@ -632,32 +647,6 @@ const Terminal = () => {
                 </div>
             )}
 
-            {showConnectModal && (
-                <div id="connect-modal" className="modal-overlay open fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-md">
-                    <div className="modal-content bg-bg-surface1 border border-stroke-subtle rounded-16 p-6 w-full max-w-sm shadow-2xl animate-in fade-in zoom-in-95 duration-200">
-                        <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-xl font-bold text-text-primary">Connect Wallet</h3>
-                            <button className="text-text-tertiary hover:text-text-primary transition-colors" onClick={closeModal}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                            </button>
-                        </div>
-                        <div className="flex flex-col gap-3">
-                            {['Phantom', 'Solflare', 'Backpack', 'Ledger'].map((wallet) => (
-                                <button key={wallet} className="flex items-center justify-between p-4 rounded-12 bg-bg-surface2 hover:bg-bg-surface3 border border-stroke-subtle transition-all group">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-text-primary flex items-center justify-center text-bg-base font-bold text-xs">{wallet[0]}</div>
-                                        <span className="text-text-primary font-medium">{wallet}</span>
-                                    </div>
-                                    <div className="w-2 h-2 rounded-full bg-accent-green opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                </button>
-                            ))}
-                        </div>
-                        <p className="text-xs text-text-tertiary text-center mt-6">
-                            By connecting, you agree to our <span className="text-text-secondary hover:underline cursor-pointer">Terms of Service</span>.
-                        </p>
-                    </div>
-                </div>
-            )}
         </main>
     );
 };

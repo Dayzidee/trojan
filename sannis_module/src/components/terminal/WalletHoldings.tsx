@@ -18,7 +18,7 @@ const WalletHoldings: React.FC<WalletHoldingsProps> = ({ solBalance, onDeposit, 
     return (
         <div id="analytics-column" className="border border-stroke-subtle rounded-8 relative h-auto lg:h-full w-full lg:w-auto flex-col overflow-hidden transition-all flex-1 shadow-sm bg-bg-surface1 order-2 lg:order-none min-h-[500px] flex">
             <div className="hide-scrollbar flex h-full flex-col gap-2 overflow-y-auto overscroll-none p-2">
-                <div data-scroll-container="true" className="hide-scrollbar" style={{ flex: '100 1 0px', overflowX: 'hidden', overflowY: 'unset', borderRadius: '8px' }}>
+                <div data-scroll-container="true" className="hide-scrollbar" style={{ flex: '1 1 auto', overflowX: 'hidden', overflowY: 'unset', borderRadius: '8px' }}>
                     <div className="flex h-full w-full flex-1">
                         <div className="flex w-full flex-1 flex-col">
                             <div className="flex items-center justify-between px-2 pb-5 pt-3">

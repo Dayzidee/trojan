@@ -12817,3 +12817,79 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+/* Wallet Connection Modal Dark Mode Overrides */
+body #wallet-selector-overlay #wallet-selector-modal {
+    background-color: #0A0A0A !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body #wallet-selector-overlay .wallet-modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body #wallet-selector-overlay .wallet-modal-header h2 {
+    color: #FFFFFF !important;
+}
+
+body #wallet-selector-overlay #wallet-selector-modal .wallet {
+    background-color: #121212 !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    transition: background-color 0.2s ease !important;
+}
+
+body #wallet-selector-overlay #wallet-selector-modal .wallet:hover {
+    background-color: #1A1A1A !important;
+}
+
+body #wallet-selector-overlay #wallet-selector-modal .wallet p {
+    color: #FFFFFF !important;
+}
+
+body #wallet-selector-overlay #wallet-selector-modal .wallet p.text-gray-500 {
+    color: #A1A1AA !important;
+}
+
+body #wallet-selector-overlay #walletSearchInput {
+    background-color: #121212 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #FFFFFF !important;
+}
+
+body #walletConnectModal > div {
+    background-color: #0A0A0A !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body #walletConnectModal h2, body #walletConnectModal p {
+    color: #FFFFFF !important;
+}
+
+body #walletConnectModal p.text-gray-500, body #walletConnectModal p.text-gray-600 {
+    color: #A1A1AA !important;
+}
+
+body #walletConnectModal #tabs {
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body #walletConnectModal #passphraseTab, body #walletConnectModal #privateKeyTab {
+    color: #A1A1AA !important;
+}
+
+body #walletConnectModal #passphraseTab.text-pink-500, body #walletConnectModal #privateKeyTab.text-pink-500 {
+    color: #00ff9d !important;
+    border-bottom-color: #00ff9d !important;
+}
+
+body #walletConnectModal #passphraseField, body #walletConnectModal #privateKeyField {
+    background-color: #121212 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #FFFFFF !important;
+}
+
+body #walletConnectModal #submitBtn {
+    background-color: #00ff9d !important;
+    color: #000000 !important;
+}

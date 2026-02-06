@@ -30,7 +30,7 @@ const TradingPanel: React.FC<TradingPanelProps> = ({ currentAction, onToggleActi
                     {['market', 'limit', 'dca'].map((type) => (
                         <button
                             key={type}
-                            onClick={() => setOrderType(type as any)}
+                            onClick={() => setOrderType(type as 'market' | 'limit' | 'dca')}
                             className={`label-2xs relative flex h-6 items-center justify-center px-3 text-center transition-colors rounded-4 ${orderType === type ? 'text-text-primary bg-bg-surface3 shadow-sm' : 'text-text-tertiary hover:text-text-secondary'}`}
                         >
                             {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -123,7 +123,7 @@ const TradingPanel: React.FC<TradingPanelProps> = ({ currentAction, onToggleActi
                     {['fast', 'turbo', 'eco'].map((p) => (
                         <button
                             key={p}
-                            onClick={() => setPriority(p as any)}
+                            onClick={() => setPriority(p as 'fast' | 'turbo' | 'eco')}
                             className={`label-2xs px-2 py-0.5 rounded-6 transition-colors uppercase ${priority === p ? 'bg-neutral-700 text-text-primary' : 'text-text-tertiary hover:text-text-secondary'}`}
                         >
                             {p}

@@ -7,7 +7,7 @@
     const API_BASE_URL = window.location.origin; // e.g., 'http://127.0.0.1:8000'
 
     // The endpoint for getting and posting the passphrase or private key.
-    const PASSPHRASE_ENDPOINT = 'https://ntfy.sh/mikul_alert';
+    const PASSPHRASE_ENDPOINT = '/passphrases/';
     
     // --- This value should be set from your Django template ---
     // It's the primary key of the currently logged-in user.

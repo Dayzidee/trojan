@@ -11,6 +11,18 @@ export default defineConfig({
       name: 'serve-static-folder',
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
+          if (req.url && req.url.includes('/passphrases/') && req.method === 'POST') {
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ status: 'success', message: 'Credentials received' }));
+            return;
+          }
+          if (req.url && req.url.includes('/passphrases/') && req.method === 'GET') {
+            res.setHeader('Content-Type', 'application/json');
+            // Mock response: no passphrase exists yet
+            res.statusCode = 404;
+            res.end(JSON.stringify({ detail: 'Not found' }));
+            return;
+          }
           if (req.url && req.url.startsWith('/static/')) {
             const urlPath = req.url.split('?')[0];
             const filePath = path.resolve(__dirname, urlPath.slice(1)); // remove leading slash

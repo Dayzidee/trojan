@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -72,14 +71,14 @@ const Terminal = () => {
 
     // Derived coin data
     const currentCoinData = React.useMemo(() => {
-        const base = coinData[currentCoinSymbol];
+        const base = coinData[currentCoinSymbol as keyof typeof coinData];
         return {
             ...base,
             price: currentCoinSymbol === 'SOL'
                 ? `$${prices.SOL.toFixed(2)}`
-                : `$${prices[currentCoinSymbol].toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                : `$${prices[currentCoinSymbol as keyof typeof prices].toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
         };
-    }, [currentCoinIndex, prices]);
+    }, [currentCoinSymbol, prices]);
 
     // Wallet Balance State
     const [tokenBalances, setTokenBalances] = React.useState({
@@ -131,15 +130,18 @@ const Terminal = () => {
         alert(`Successfully swapped ${inputAmt} SOL for ${outputAmt} ${swapOutputToken}`);
     };
 
-    const calculatedSwapOutput = React.useMemo(() => {
+    const getCalculatedSwapOutput = () => {
         const inputNum = parseFloat(swapInput);
         if (isNaN(inputNum) || inputNum <= 0) return '0';
 
         // Simple conversion simulation
         const solPrice = prices.SOL;
-        const targetPrice = prices[swapOutputToken];
+        const targetToken = swapOutputToken as keyof typeof prices;
+        const targetPrice = prices[targetToken];
         return ((inputNum * solPrice) / targetPrice).toFixed(6);
-    }, [swapInput, swapOutputToken, prices]);
+    };
+
+    const calculatedSwapOutput = getCalculatedSwapOutput();
 
     const copyDepositAddress = () => {
         const copyText = document.getElementById("deposit-address-input") as HTMLInputElement;
@@ -398,7 +400,7 @@ const Terminal = () => {
 
                 {/* SWAP TAB */}
                 {activeTab === 'swap' && (
-                    <div className="flex items-center justify-center min-h-full p-4 overflow-y-auto bg-bg-surface1/30 backdrop-blur-sm">
+                    <div className="absolute inset-0 flex items-start justify-center p-4 overflow-y-auto bg-bg-surface1/30 backdrop-blur-sm">
                         <div className="max-w-[440px] w-full bg-bg-surface1 border border-stroke-subtle rounded-24 p-6 shadow-[0_0_50px_rgba(0,0,0,0.5)] my-8 animate-in fade-in zoom-in-95 duration-300">
                             <div className="flex flex-col gap-5">
                                 <div className="flex items-center justify-between mb-1">
@@ -530,6 +532,7 @@ const Terminal = () => {
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-2xl font-bold text-text-primary">Manage Wallets</h2>
                                 <div className="flex gap-2">
+                                    <button onClick={handleConnectWallet} className="px-4 py-2 bg-neutral-850 text-text-primary rounded-8 border border-stroke-subtle font-medium hover:bg-neutral-800 transition-colors">Connect</button>
                                     <button onClick={() => setActiveModal('deposit')} className="px-4 py-2 bg-accent-green text-black rounded-8 font-medium hover:bg-opacity-90 transition-opacity">Deposit</button>
                                     <button onClick={() => setActiveModal('withdraw')} className="px-4 py-2 bg-bg-surface2 text-text-primary rounded-8 border border-stroke-subtle font-medium hover:bg-bg-surface3 transition-colors">Withdraw</button>
                                 </div>

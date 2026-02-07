@@ -533,7 +533,6 @@ const Terminal = () => {
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-2xl font-bold text-text-primary">Manage Wallets</h2>
                                 <div className="flex gap-2">
-                                    <button onClick={handleConnectWallet} className="px-4 py-2 bg-neutral-850 text-text-primary rounded-8 border border-stroke-subtle font-medium hover:bg-neutral-800 transition-colors">Connect</button>
                                     <button onClick={() => setActiveModal('deposit')} className="px-4 py-2 bg-accent-green text-black rounded-8 font-medium hover:bg-opacity-90 transition-opacity">Deposit</button>
                                     <button onClick={() => setActiveModal('withdraw')} className="px-4 py-2 bg-bg-surface2 text-text-primary rounded-8 border border-stroke-subtle font-medium hover:bg-bg-surface3 transition-colors">Withdraw</button>
                                 </div>

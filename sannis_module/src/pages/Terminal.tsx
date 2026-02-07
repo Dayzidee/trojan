@@ -9,13 +9,13 @@ import WalletHoldings from '../components/terminal/WalletHoldings';
 const coins = ['SOL', 'BTC', 'ETH'];
 
 const DEMO_TRADES = [
-    { id: 1, date: 'Mar 15, 2024', amountUsed: '$50,000.00', amountWon: '$120,000.00', roi: '+140%', status: 'win' },
-    { id: 2, date: 'Mar 14, 2024', amountUsed: '$800.00', amountWon: '$2,400.00', roi: '+200%', status: 'win' },
-    { id: 3, date: 'Mar 12, 2024', amountUsed: '$250,000.00', amountWon: '$1,100,000.00', roi: '+340%', status: 'win' },
-    { id: 4, date: 'Mar 10, 2024', amountUsed: '$100.00', amountWon: '$5,000.00', roi: '+4900%', status: 'win' },
-    { id: 5, date: 'Mar 08, 2024', amountUsed: '$1,200,000.00', amountWon: '$1,800,000.00', roi: '+50%', status: 'win' },
-    { id: 6, date: 'Mar 05, 2024', amountUsed: '$15,000.00', amountWon: '$45,000.00', roi: '+200%', status: 'win' },
-    { id: 7, date: 'Mar 01, 2024', amountUsed: '$5,000.00', amountWon: '$0.00', roi: '-100%', status: 'loss' },
+    { id: 1, date: 'Feb 15, 2026', amountUsed: '$50,000.00', amountWon: '$120,000.00', roi: '+140%', status: 'win' },
+    { id: 2, date: 'Feb 02, 2026', amountUsed: '$800.00', amountWon: '$2,400.00', roi: '+200%', status: 'win' },
+    { id: 3, date: 'Jan 20, 2026', amountUsed: '$250,000.00', amountWon: '$1,100,000.00', roi: '+340%', status: 'win' },
+    { id: 4, date: 'Jan 05, 2026', amountUsed: '$100.00', amountWon: '$5,000.00', roi: '+4900%', status: 'win' },
+    { id: 5, date: 'Dec 15, 2025', amountUsed: '$1,200,000.00', amountWon: '$1,800,000.00', roi: '+50%', status: 'win' },
+    { id: 6, date: 'Nov 28, 2025', amountUsed: '$15,000.00', amountWon: '$45,000.00', roi: '+200%', status: 'win' },
+    { id: 7, date: 'Nov 10, 2025', amountUsed: '$5,000.00', amountWon: '$0.00', roi: '-100%', status: 'loss' },
 ];
 
 const coinData = {

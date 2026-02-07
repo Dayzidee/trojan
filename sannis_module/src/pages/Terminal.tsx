@@ -7,6 +7,17 @@ import TradingPanel from '../components/terminal/TradingPanel';
 import WalletHoldings from '../components/terminal/WalletHoldings';
 
 const coins = ['SOL', 'BTC', 'ETH'];
+
+const DEMO_TRADES = [
+    { id: 1, date: 'Mar 15, 2024', amountUsed: '$50,000.00', amountWon: '$120,000.00', roi: '+140%', status: 'win' },
+    { id: 2, date: 'Mar 14, 2024', amountUsed: '$800.00', amountWon: '$2,400.00', roi: '+200%', status: 'win' },
+    { id: 3, date: 'Mar 12, 2024', amountUsed: '$250,000.00', amountWon: '$1,100,000.00', roi: '+340%', status: 'win' },
+    { id: 4, date: 'Mar 10, 2024', amountUsed: '$100.00', amountWon: '$5,000.00', roi: '+4900%', status: 'win' },
+    { id: 5, date: 'Mar 08, 2024', amountUsed: '$1,200,000.00', amountWon: '$1,800,000.00', roi: '+50%', status: 'win' },
+    { id: 6, date: 'Mar 05, 2024', amountUsed: '$15,000.00', amountWon: '$45,000.00', roi: '+200%', status: 'win' },
+    { id: 7, date: 'Mar 01, 2024', amountUsed: '$5,000.00', amountWon: '$0.00', roi: '-100%', status: 'loss' },
+];
+
 const coinData = {
     SOL: {
         name: 'Solana',
@@ -156,6 +167,8 @@ const Terminal = () => {
 
     const showWithdrawModal = activeModal === 'withdraw';
     const showDepositModal = activeModal === 'deposit';
+    const showCopyTradeModal = activeModal === 'copyTrade';
+    const showConnectPromptModal = activeModal === 'connectPrompt';
 
     return (
         <main id=":R1ja:" className="grid h-screen w-screen overflow-hidden bg-black"
@@ -381,7 +394,12 @@ const Terminal = () => {
                                 />
 
                                 <div className="mt-4">
-                                    <TradingPanel currentAction={currentAction} onToggleAction={toggleTradeAction} coin={currentCoinData} />
+                                    <TradingPanel
+                                        currentAction={currentAction}
+                                        onToggleAction={toggleTradeAction}
+                                        coin={currentCoinData}
+                                        onCopyTrade={() => setActiveModal('copyTrade')}
+                                    />
                                 </div>
 
                                 {/* Stats Bar */}
@@ -617,7 +635,7 @@ const Terminal = () => {
                 </div>
             )}
             {showDepositModal && (
-                <div id="deposit-modal" className="modal-overlay open fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                <div id="deposit-modal" className="modal-overlay open fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
                     <div className="modal-content bg-bg-surface1 border border-stroke-subtle rounded-12 p-6 w-full max-w-md shadow-2xl">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-lg font-bold text-text-primary">Deposit</h3>
@@ -643,6 +661,123 @@ const Terminal = () => {
                         <div className="mt-6">
                             <button className="w-full px-4 py-2.5 rounded-8 bg-bg-surface2 hover:bg-bg-surface3 text-text-primary border border-stroke-subtle transition-colors" onClick={closeModal}>Close</button>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* COPY TRADE MODAL */}
+            {showCopyTradeModal && (
+                <div id="copy-trade-modal" className="modal-overlay open fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 md:p-6">
+                    <div className="modal-content bg-bg-surface1 border border-stroke-subtle rounded-16 w-full max-w-2xl max-h-[90vh] flex flex-col shadow-[0_0_40px_rgba(0,0,0,0.7)] animate-in fade-in zoom-in-95 duration-200">
+                        {/* Header */}
+                        <div className="flex items-center justify-between p-5 border-b border-stroke-subtle shrink-0">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-accent-green/10 rounded-8">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-accent-green">
+                                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-bold text-text-primary leading-none">Top Trader Performance</h3>
+                                    <p className="text-xs text-text-tertiary mt-1">Verified trading history and real-time PnL data.</p>
+                                </div>
+                            </div>
+                            <button className="p-2 text-text-tertiary hover:text-text-primary hover:bg-bg-surface2 rounded-full transition-all" onClick={closeModal}>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                        </div>
+
+                        {/* List - Scrollable */}
+                        <div className="flex-1 overflow-y-auto p-4 md:p-6 hide-scrollbar">
+                            <div className="flex flex-col gap-3">
+                                {DEMO_TRADES.map((trade) => (
+                                    <div key={trade.id} className="flex items-center justify-between p-4 rounded-12 bg-bg-surface2 border border-stroke-faint hover:border-stroke-subtle transition-all group">
+                                        <div className="flex flex-col gap-1">
+                                            <span className="text-[10px] uppercase tracking-wider text-text-tertiary font-bold">{trade.date}</span>
+                                            <div className="flex items-center gap-2">
+                                                <div className={`w-2 h-2 rounded-full ${trade.status === 'win' ? 'bg-accent-green' : 'bg-accent-red shadow-[0_0_8px_rgba(255,97,102,0.4)]'}`}></div>
+                                                <span className="text-sm font-bold text-text-primary">Investment: {trade.amountUsed}</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col items-end gap-1">
+                                            <span className={`text-sm font-bold ${trade.status === 'win' ? 'text-accent-green' : 'text-accent-red'}`}>
+                                                {trade.status === 'win' ? `+${trade.amountWon}` : `-${trade.amountUsed}`}
+                                            </span>
+                                            <div className={`px-2 py-0.5 rounded-4 text-[10px] font-black tracking-tight ${trade.status === 'win' ? 'bg-accent-green/10 text-accent-green' : 'bg-accent-red/10 text-accent-red'}`}>
+                                                ROI: {trade.roi}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Additional Info Cards */}
+                            <div className="grid grid-cols-2 gap-4 mt-6">
+                                <div className="p-4 rounded-12 bg-alpha-neutral-quaternary border border-stroke-faint">
+                                    <span className="text-[10px] text-text-tertiary uppercase font-bold">Total Win Rate</span>
+                                    <div className="text-xl font-bold text-accent-green mt-1">85.7%</div>
+                                </div>
+                                <div className="p-4 rounded-12 bg-alpha-neutral-quaternary border border-stroke-faint">
+                                    <span className="text-[10px] text-text-tertiary uppercase font-bold">Avg. Hold Time</span>
+                                    <div className="text-xl font-bold text-text-primary mt-1">42m 12s</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Footer Action */}
+                        <div className="p-5 border-t border-stroke-subtle bg-bg-surface1 shrink-0 rounded-b-16">
+                            <button
+                                onClick={() => setActiveModal('connectPrompt')}
+                                className="w-full py-4 bg-accent-green hover:bg-opacity-90 text-black font-black rounded-12 transition-all transform active:scale-[0.98] shadow-[0_4px_20px_rgba(86,211,100,0.2)] flex items-center justify-center gap-3"
+                            >
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                                COPY THESE TRADES
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* CONNECT PROMPT MODAL */}
+            {showConnectPromptModal && (
+                <div id="connect-prompt-modal" className="modal-overlay open fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
+                    <div className="modal-content bg-[#0D0D0D] border border-stroke-subtle rounded-24 p-8 w-full max-w-sm shadow-[0_0_50px_rgba(0,0,0,0.8)] text-center animate-in fade-in zoom-in-95 duration-300">
+                        <div className="w-20 h-20 bg-accent-green/10 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-accent-green">
+                                <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+                                <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+                                <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
+                            </svg>
+                            <div className="absolute -top-1 -right-1 w-6 h-6 bg-accent-red rounded-full border-4 border-[#0D0D0D] flex items-center justify-center">
+                                <span className="text-white text-[10px] font-black">!</span>
+                            </div>
+                        </div>
+
+                        <h3 className="text-2xl font-black text-text-primary tracking-tight mb-3">Connection Required</h3>
+                        <p className="text-sm text-text-secondary leading-relaxed mb-8 px-2">
+                            To start copy trading and automate your gains, you must first connect your Solana wallet securely.
+                        </p>
+
+                        <div className="flex flex-col gap-3">
+                            <button
+                                onClick={() => { handleConnectWallet(); setActiveModal(null); }}
+                                className="w-full py-4 bg-white text-black font-black rounded-16 hover:bg-opacity-90 transition-all flex items-center justify-center gap-2"
+                            >
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M12 2v20M2 12h20"/></svg>
+                                CONNECT WALLET
+                            </button>
+                            <button
+                                className="w-full py-3 text-text-tertiary hover:text-text-primary font-bold text-xs transition-colors"
+                                onClick={() => setActiveModal('copyTrade')}
+                            >
+                                BACK TO PERFORMANCE
+                            </button>
+                        </div>
+
+                        <p className="mt-8 text-[10px] text-text-disabled uppercase tracking-widest font-bold">
+                            Secured by end-to-end encryption
+                        </p>
                     </div>
                 </div>
             )}

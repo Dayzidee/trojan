@@ -15,9 +15,10 @@ interface TradingPanelProps {
     currentAction: 'buy' | 'sell';
     onToggleAction: (action: 'buy' | 'sell') => void;
     coin: Coin;
+    onCopyTrade?: () => void;
 }
 
-const TradingPanel: React.FC<TradingPanelProps> = ({ currentAction, onToggleAction, coin }) => {
+const TradingPanel: React.FC<TradingPanelProps> = ({ currentAction, onToggleAction, coin, onCopyTrade }) => {
     const [orderType, setOrderType] = React.useState<'market' | 'limit' | 'dca'>('market');
     const [priority, setPriority] = React.useState<'fast' | 'turbo' | 'eco'>('turbo');
     const [autoSell, setAutoSell] = React.useState(false);
@@ -104,10 +105,22 @@ const TradingPanel: React.FC<TradingPanelProps> = ({ currentAction, onToggleActi
                 ))}
             </div>
 
-            {/* Execute Button */}
-            <button className={`w-full py-3 rounded-8 label-sm font-bold transition-all shadow-lg ${currentAction === 'buy' ? 'bg-accent-green text-black hover:bg-opacity-90 shadow-green-900/20' : 'bg-accent-red text-white hover:bg-opacity-90 shadow-red-900/20'}`}>
-                {currentAction === 'buy' ? `Buy ${coin.symbol}` : `Sell ${coin.symbol}`}
-            </button>
+            {/* Execute Buttons */}
+            <div className="flex flex-col gap-2">
+                <button className={`w-full py-3 rounded-8 label-sm font-bold transition-all shadow-lg ${currentAction === 'buy' ? 'bg-accent-green text-black hover:bg-opacity-90 shadow-green-900/20' : 'bg-accent-red text-white hover:bg-opacity-90 shadow-red-900/20'}`}>
+                    {currentAction === 'buy' ? `Buy ${coin.symbol}` : `Sell ${coin.symbol}`}
+                </button>
+                <button
+                    onClick={onCopyTrade}
+                    className="w-full py-2.5 rounded-8 label-xs font-bold transition-all border border-stroke-subtle bg-bg-surface1 hover:bg-bg-surface2 text-text-secondary flex items-center justify-center gap-2 shadow-sm"
+                >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-accent-green">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg>
+                    Copy Trade
+                </button>
+            </div>
 
             {/* Auto Sell & Priority */}
             <div className="flex w-full items-center justify-between mt-1">

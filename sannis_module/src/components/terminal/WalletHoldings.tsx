@@ -8,11 +8,7 @@ interface WalletHoldingsProps {
     onManage?: () => void;
 }
 
-const MOCK_HISTORY = [
-    { id: 1, type: 'Buy', amount: '0.5 SOL', price: '$72.61', status: 'Success', time: '2 mins ago', color: 'text-accent-green' },
-    { id: 2, type: 'Sell', amount: '1.2 SOL', price: '$174.24', status: 'Success', time: '15 mins ago', color: 'text-accent-red' },
-    { id: 3, type: 'Buy', amount: '0.1 SOL', price: '$14.52', status: 'Success', time: '1 hour ago', color: 'text-accent-green' },
-];
+const MOCK_HISTORY: any[] = [];
 
 const WalletHoldings: React.FC<WalletHoldingsProps> = ({ solBalance, onDeposit, onWithdraw, onConnect, onManage }) => {
     return (
@@ -86,21 +82,27 @@ const WalletHoldings: React.FC<WalletHoldingsProps> = ({ solBalance, onDeposit, 
                         <svg width="12" height="12" className="text-icon-tertiary"><use href="#icon-clock-outline"></use></svg>
                     </div>
                     <div className="flex flex-col gap-2">
-                        {MOCK_HISTORY.map((item) => (
-                            <div key={item.id} className="flex items-center justify-between p-2 rounded-6 bg-bg-surface1 border border-stroke-faint hover:border-stroke-subtle transition-all cursor-pointer">
-                                <div className="flex flex-col gap-0.5">
-                                    <div className="flex items-center gap-2">
-                                        <span className={`label-2xs font-bold ${item.color}`}>{item.type}</span>
-                                        <span className="label-2xs text-text-primary">{item.amount}</span>
+                        {MOCK_HISTORY.length > 0 ? (
+                            MOCK_HISTORY.map((item) => (
+                                <div key={item.id} className="flex items-center justify-between p-2 rounded-6 bg-bg-surface1 border border-stroke-faint hover:border-stroke-subtle transition-all cursor-pointer">
+                                    <div className="flex flex-col gap-0.5">
+                                        <div className="flex items-center gap-2">
+                                            <span className={`label-2xs font-bold ${item.color}`}>{item.type}</span>
+                                            <span className="label-2xs text-text-primary">{item.amount}</span>
+                                        </div>
+                                        <span className="label-3xs text-text-tertiary">{item.time}</span>
                                     </div>
-                                    <span className="label-3xs text-text-tertiary">{item.time}</span>
+                                    <div className="flex flex-col items-end gap-0.5">
+                                        <span className="label-2xs text-text-secondary">{item.price}</span>
+                                        <span className="label-3xs text-accent-green">{item.status}</span>
+                                    </div>
                                 </div>
-                                <div className="flex flex-col items-end gap-0.5">
-                                    <span className="label-2xs text-text-secondary">{item.price}</span>
-                                    <span className="label-3xs text-accent-green">{item.status}</span>
-                                </div>
+                            ))
+                        ) : (
+                            <div className="p-8 text-center bg-bg-surface1 rounded-6 border border-stroke-faint">
+                                <p className="label-2xs text-text-tertiary">no transactions yet</p>
                             </div>
-                        ))}
+                        )}
                     </div>
                 </div>
             </div>

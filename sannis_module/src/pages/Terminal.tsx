@@ -366,7 +366,10 @@ const Terminal = () => {
                         {/* Left Column: Wallet Holdings (Desktop only) */}
                         <div className="hidden lg:flex w-[35%] flex-col border-r border-stroke-subtle bg-bg-surface1 p-2 overflow-y-auto">
                             <WalletHoldings
-                                solBalance={solBalance}
+                                balances={tokenBalances}
+                                prices={prices}
+                                coinData={coinData}
+                                depositCoins={depositCoins}
                                 onDeposit={() => setActiveModal('deposit')}
                                 onWithdraw={() => setActiveModal('withdraw')}
                                 onConnect={handleConnectWallet}
@@ -548,7 +551,10 @@ const Terminal = () => {
                                 </div>
                             </div>
                             <WalletHoldings
-                                solBalance={solBalance}
+                                balances={tokenBalances}
+                                prices={prices}
+                                coinData={coinData}
+                                depositCoins={depositCoins}
                                 onDeposit={() => setActiveModal('deposit')}
                                 onWithdraw={() => setActiveModal('withdraw')}
                                 onConnect={handleConnectWallet}

@@ -40,6 +40,12 @@ const coinData = {
     }
 };
 
+const depositCoins = [
+    { name: 'Solana', symbol: 'SOL', address: '8GwkvRuPPnbZ9ZD69nehfmG1fu1pU54WZW7oy4pwoupv' },
+    { name: 'Bitcoin', symbol: 'BTC', address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' },
+    { name: 'Ethereum', symbol: 'ETH', address: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e' }
+];
+
 const Terminal = () => {
     const [activeModal, setActiveModal] = React.useState<string | null>(null);
     const [activeTab, setActiveTab] = React.useState('terminal');
@@ -143,15 +149,10 @@ const Terminal = () => {
 
     const calculatedSwapOutput = getCalculatedSwapOutput();
 
-    const copyDepositAddress = () => {
-        const copyText = document.getElementById("deposit-address-input") as HTMLInputElement;
-        if (copyText) {
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(copyText.value).then(() => {
-                alert('Address copied!');
-            });
-        }
+    const copyToClipboard = (text: string) => {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Address copied!');
+        });
     };
 
     const showWithdrawModal = activeModal === 'withdraw';
@@ -625,19 +626,37 @@ const Terminal = () => {
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                             </button>
                         </div>
-                        <div className="flex flex-col gap-4">
-                            <div className="flex flex-col gap-1.5">
-                                <label className="text-xs text-text-tertiary">Your Deposit Address</label>
-                                <div className="flex gap-2">
-                                    <input type="text" className="flex-1 bg-bg-surface2 border border-stroke-subtle rounded-8 px-3 py-2 text-text-secondary text-sm outline-none" value="8GwkvRuPPnbZ9ZD69nehfmG1fu1pU54WZW7oy4pwoupv" readOnly id="deposit-address-input" />
-                                    <button className="px-3 py-2 rounded-8 border border-stroke-subtle hover:bg-bg-surface2 text-icon-secondary transition-colors" onClick={copyDepositAddress}>
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                    </button>
-                                </div>
-                                <p className="text-[11px] text-text-tertiary">Send SOL to this address to deposit.</p>
-                            </div>
-                            <div className="flex justify-center mt-4 bg-white p-3 rounded-12 w-fit mx-auto">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=8GwkvRuPPnbZ9ZD69nehfmG1fu1pU54WZW7oy4pwoupv" alt="QR Code" width="150" height="150" />
+                        <div className="flex flex-col gap-5">
+                            <p className="text-[11px] text-text-tertiary">Send only supported assets to these addresses. Deposits may take a few minutes to appear.</p>
+
+                            <div className="flex flex-col gap-3">
+                                {depositCoins.map((coin) => {
+                                    const data = coinData[coin.symbol as keyof typeof coinData];
+                                    return (
+                                        <div key={coin.symbol} className="bg-bg-surface2 border border-stroke-subtle rounded-12 p-3.5 flex flex-col gap-3">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    {data.isSvg ? (
+                                                        <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center transform scale-90" dangerouslySetInnerHTML={{ __html: data.icon }} />
+                                                    ) : (
+                                                        <img src={data.icon} className="w-5 h-5 rounded-full" alt={coin.symbol} />
+                                                    )}
+                                                    <span className="text-sm font-bold text-text-primary">{coin.name} <span className="text-text-tertiary font-normal ml-1">{coin.symbol}</span></span>
+                                                </div>
+                                                <button
+                                                    onClick={() => copyToClipboard(coin.address)}
+                                                    className="flex items-center gap-1.5 px-2 py-1 rounded-6 bg-bg-surface3 hover:bg-opacity-80 transition-all text-[10px] font-bold text-accent-green border border-accent-green/20"
+                                                >
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                                    COPY
+                                                </button>
+                                            </div>
+                                            <div className="bg-black/20 rounded-8 px-3 py-2 border border-stroke-faint break-all font-mono text-[10px] text-text-secondary select-all">
+                                                {coin.address}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                         <div className="mt-6">

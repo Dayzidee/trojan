@@ -1,7 +1,26 @@
 import React from 'react';
 
+interface CoinMeta {
+    name: string;
+    symbol: string;
+    address: string;
+}
+
+interface CoinData {
+    [key: string]: {
+        name: string;
+        symbol: string;
+        price: string;
+        icon: string;
+        isSvg: boolean;
+    };
+}
+
 interface WalletHoldingsProps {
-    solBalance: number;
+    balances: { [key: string]: number };
+    prices: { [key: string]: number };
+    coinData: CoinData;
+    depositCoins: CoinMeta[];
     onDeposit?: () => void;
     onWithdraw?: () => void;
     onConnect?: () => void;
@@ -14,7 +33,7 @@ const MOCK_HISTORY = [
     { id: 3, type: 'Buy', amount: '0.1 SOL', price: '$14.52', status: 'Success', time: '1 hour ago', color: 'text-accent-green' },
 ];
 
-const WalletHoldings: React.FC<WalletHoldingsProps> = ({ solBalance, onDeposit, onWithdraw, onConnect, onManage }) => {
+const WalletHoldings: React.FC<WalletHoldingsProps> = ({ balances, prices, coinData, depositCoins, onDeposit, onWithdraw, onConnect, onManage }) => {
     return (
         <div id="analytics-column" className="border border-stroke-subtle rounded-8 relative h-auto lg:h-full w-full lg:w-auto flex-col overflow-hidden transition-all flex-1 shadow-sm bg-bg-surface1 order-2 lg:order-none min-h-[500px] flex">
             <div className="hide-scrollbar flex h-full flex-col gap-2 overflow-y-auto overscroll-none p-2">
@@ -36,7 +55,7 @@ const WalletHoldings: React.FC<WalletHoldingsProps> = ({ solBalance, onDeposit, 
                                 <div className="bg-bg-surface1 rounded-t-8 border-stroke-subtle sticky z-10 flex items-center justify-between gap-2 border-b px-2.5 h-[42px] top-0">
                                     <div className="flex items-center gap-2">
                                         <span className="label-2xs text-text-primary font-medium">Active Wallets</span>
-                                        <div className="bg-alpha-white-tertiary rounded-6 px-1.5 label-2xs text-text-secondary">1</div>
+                                        <div className="bg-alpha-white-tertiary rounded-6 px-1.5 label-2xs text-text-secondary">{depositCoins.length}</div>
                                     </div>
                                     <button onClick={onConnect} className="h-6 rounded-6 bg-neutral-850 hover:bg-neutral-800 border border-stroke-subtle px-2 label-2xs text-text-secondary transition-colors">Connect Wallet</button>
                                 </div>
@@ -51,26 +70,39 @@ const WalletHoldings: React.FC<WalletHoldingsProps> = ({ solBalance, onDeposit, 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr className="hover:bg-bg-surface2 transition-colors border-b border-stroke-faint">
-                                                <td className="px-4 py-3">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="w-8 h-8 rounded-full bg-alpha-neutral-tertiary flex items-center justify-center label-2xs text-text-secondary">W1</div>
-                                                        <div className="flex flex-col">
-                                                            <span className="label-2xs text-text-primary font-medium">Main Wallet</span>
-                                                            <span className="label-3xs text-text-tertiary">FHg9...Vkpk</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className="px-4 py-3">
-                                                    <div className="flex flex-col">
-                                                        <span className="label-2xs text-text-primary font-medium">{solBalance.toFixed(2)} SOL</span>
-                                                        <span className="label-3xs text-text-tertiary">${(solBalance * 145.20).toFixed(2)}</span>
-                                                    </div>
-                                                </td>
-                                                <td className="px-4 py-3 text-right">
-                                                    <button onClick={onManage} className="h-7 rounded-6 bg-neutral-850 hover:bg-neutral-800 border border-stroke-subtle px-2 label-2xs text-text-secondary transition-colors">Manage</button>
-                                                </td>
-                                            </tr>
+                                            {depositCoins.map((coin) => {
+                                                const data = coinData[coin.symbol];
+                                                const balance = balances[coin.symbol] || 0;
+                                                const price = prices[coin.symbol] || 0;
+                                                return (
+                                                    <tr key={coin.symbol} className="hover:bg-bg-surface2 transition-colors border-b border-stroke-faint">
+                                                        <td className="px-4 py-3">
+                                                            <div className="flex items-center gap-3">
+                                                                <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-bg-surface3">
+                                                                    {data.isSvg ? (
+                                                                        <div className="w-5 h-5 flex items-center justify-center transform scale-90" dangerouslySetInnerHTML={{ __html: data.icon }} />
+                                                                    ) : (
+                                                                        <img src={data.icon} className="w-5 h-5 rounded-full" alt={coin.symbol} />
+                                                                    )}
+                                                                </div>
+                                                                <div className="flex flex-col min-w-0">
+                                                                    <span className="label-2xs text-text-primary font-medium truncate">{coin.name} Wallet</span>
+                                                                    <span className="label-3xs text-text-tertiary truncate">{coin.address.slice(0, 4)}...{coin.address.slice(-4)}</span>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-4 py-3">
+                                                            <div className="flex flex-col">
+                                                                <span className="label-2xs text-text-primary font-medium">{balance.toFixed(2)} {coin.symbol}</span>
+                                                                <span className="label-3xs text-text-tertiary">${(balance * price).toFixed(2)}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-4 py-3 text-right">
+                                                            <button onClick={onManage} className="h-7 rounded-6 bg-neutral-850 hover:bg-neutral-800 border border-stroke-subtle px-2 label-2xs text-text-secondary transition-colors">Manage</button>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
                                         </tbody>
                                     </table>
                                 </div>

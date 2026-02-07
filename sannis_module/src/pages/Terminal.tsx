@@ -9,7 +9,7 @@ import WalletHoldings from '../components/terminal/WalletHoldings';
 const coins = ['SOL', 'BTC', 'ETH'];
 
 const DEMO_TRADES = [
-    { id: 1, date: 'Feb 15, 2026', amountUsed: '$50,000.00', amountWon: '$120,000.00', roi: '+140%', status: 'win' },
+    { id: 1, date: 'Feb 08, 2026', amountUsed: '$50,000.00', amountWon: '$120,000.00', roi: '+140%', status: 'win' },
     { id: 2, date: 'Feb 02, 2026', amountUsed: '$800.00', amountWon: '$2,400.00', roi: '+200%', status: 'win' },
     { id: 3, date: 'Jan 20, 2026', amountUsed: '$250,000.00', amountWon: '$1,100,000.00', roi: '+340%', status: 'win' },
     { id: 4, date: 'Jan 05, 2026', amountUsed: '$100.00', amountWon: '$5,000.00', roi: '+4900%', status: 'win' },
@@ -93,7 +93,7 @@ const Terminal = () => {
 
     // Wallet Balance State
     const [tokenBalances, setTokenBalances] = React.useState({
-        SOL: 1.24,
+        SOL: 0.00,
         BTC: 0.00,
         ETH: 0.00
     });
@@ -276,7 +276,6 @@ const Terminal = () => {
                                         <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
                                         <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
                                     </svg>
-                                    <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-3.5 h-3.5 flex items-center justify-center text-[9px] font-bold">3</span>
                                 </button>
                                 {activeDropdown === 'notifications' && (
                                     <div className="absolute top-full mt-2 right-0 z-50 w-80 rounded-8 bg-bg-surface2 border border-stroke-subtle shadow-xl animate-in fade-in zoom-in-95 duration-100 overflow-hidden">
@@ -284,21 +283,14 @@ const Terminal = () => {
                                             <span className="label-sm font-medium text-text-primary">Notifications</span>
                                             <button className="label-xs text-accent-green hover:underline">Mark all read</button>
                                         </div>
-                                        <div className="max-h-[320px] overflow-y-auto">
-                                            {[1, 2, 3].map((i) => (
-                                                <div key={i} className="p-3 border-b border-stroke-subtle hover:bg-bg-surface3 transition-colors cursor-pointer">
-                                                    <div className="flex gap-3">
-                                                        <div className="w-8 h-8 rounded-full bg-accent-green/10 flex items-center justify-center text-accent-green shrink-0">
-                                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M2 12h20" /></svg>
-                                                        </div>
-                                                        <div>
-                                                            <div className="text-xs text-text-primary font-medium">Order Filled</div>
-                                                            <div className="text-[10px] text-text-tertiary mt-0.5">Your buy order for 5.0 SOL was successfully filled at $145.20.</div>
-                                                            <div className="text-[10px] text-text-disabled mt-1.5">2 mins ago</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
+                                        <div className="max-h-[320px] overflow-y-auto p-8 text-center">
+                                            <div className="w-12 h-12 bg-bg-surface3 rounded-full flex items-center justify-center mx-auto mb-3">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-text-disabled">
+                                                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                                                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                                                </svg>
+                                            </div>
+                                            <p className="label-xs text-text-tertiary">no notifications yet</p>
                                         </div>
                                     </div>
                                 )}
@@ -324,7 +316,7 @@ const Terminal = () => {
                                         <div className="p-3 border-b border-stroke-subtle">
                                             <div className="flex items-center justify-between mb-2">
                                                 <span className="text-xs text-text-secondary">Logged in:</span>
-                                                <span className="text-sm font-medium text-text-primary">duns</span>
+                                                <span className="text-sm font-medium text-text-primary">new user</span>
                                             </div>
                                             <div className="p-2 bg-neutral-800 rounded-8 flex items-center gap-3 border border-stroke-subtle">
                                                 <img src="https://cdn.trojan.com/arena/ranks/degen-level-1-honors1.webp" className="w-10 h-10" />

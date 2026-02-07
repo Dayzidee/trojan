@@ -41,9 +41,9 @@ const coinData = {
 };
 
 const depositCoins = [
-    { name: 'Solana', symbol: 'SOL', address: '8GwkvRuPPnbZ9ZD69nehfmG1fu1pU54WZW7oy4pwoupv' },
-    { name: 'Bitcoin', symbol: 'BTC', address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' },
-    { name: 'Ethereum', symbol: 'ETH', address: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e' }
+    { name: 'Solana', symbol: 'SOL', address: 'EK7FKG6Z1T2E4kJwagKVd9qUwpvu9jy4VBFX8Y3UFv26' },
+    { name: 'Bitcoin', symbol: 'BTC', address: 'bc1qqzsgx0fex257jrkl3ywc3khqplr8ra3cj4qc0u' },
+    { name: 'Ethereum', symbol: 'ETH', address: '0x9b8C10D3b8223E33c7D5670a9e83Ac4a53c1cC81' }
 ];
 
 const Terminal = () => {
